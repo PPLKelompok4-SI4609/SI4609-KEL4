@@ -1,20 +1,19 @@
+@extends('layouts.app')
 
+@section('title', 'FloodRescue | Form Laporan Banjir')
 
-<?php $__env->startSection('title', 'FloodRescue | Form Laporan Banjir'); ?>
-
-<?php $__env->startSection('content'); ?>
+@section('content')
 <div class="max-w-xl mx-auto bg-white p-8 rounded-2xl shadow-lg">
     <h1 class="text-3xl font-bold mb-6 text-center" style="color:#2db9f0;">Form Laporan Banjir Darurat</h1>
 
-    <?php if(session('success')): ?>
+    @if (session('success'))
         <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
-            <?php echo e(session('success')); ?>
-
+            {{ session('success') }}
         </div>
-    <?php endif; ?>
+    @endif
 
-    <form action="<?php echo e(route('laporan-banjir.store')); ?>" method="POST" enctype="multipart/form-data" class="space-y-5">
-        <?php echo csrf_field(); ?>
+    <form action="{{ route('laporan-banjir.store') }}" method="POST" enctype="multipart/form-data" class="space-y-5">
+        @csrf
 
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Nama</label>
@@ -68,7 +67,5 @@
         reader.readAsDataURL(event.target.files[0]);
     }
 </script>
-<?php $__env->stopSection(); ?>
+@endsection
 
-
-<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\Acer NITRO 5\Documents\SI4609-KEL4\LaravelPPLKel4\resources\views/laporan_banjir/form.blade.php ENDPATH**/ ?>
