@@ -76,8 +76,9 @@ class WeatherController extends Controller
             }
         }
 
-        if ($rainVolume > 100) return 'Tinggi';
-        if ($rainVolume > 50) return 'Sedang';
-        return 'Rendah';
+        // Adjust these thresholds as per your requirements
+        if ($rainVolume >= 150) return 'High';  // High risk for rainfall > 150 mm
+        if ($rainVolume >= 70) return 'Medium'; // Medium risk for rainfall between 70 mm and 150 mm
+        return 'Low';  // Low risk for rainfall < 70 mm
     }
 }
