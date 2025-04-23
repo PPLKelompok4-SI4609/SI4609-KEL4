@@ -15,5 +15,6 @@ class LaporanBanjir extends Model
         'deskripsi',
         'kontak',
         'foto',
-    ];
+        'status',
+    ];    
 }

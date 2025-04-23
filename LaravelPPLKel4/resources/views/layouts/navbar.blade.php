@@ -1,13 +1,8 @@
-<nav class="bg-white py-4 shadow-md" style="color:#2db9f0;">
-    <div class="container mx-auto flex flex-wrap justify-between items-center px-4">
-    <a href="/" class="flex items-center gap-2 text-2xl font-bold tracking-wide hover:text-blue-800 transition">
-        <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-8 h-8">
-        FloodRescue
-    </a>
-        <ul class="flex flex-wrap gap-6 text-lg">
-            <li><a href="/laporan-banjir" class="hover:text-blue-800 transition">Laporan Banjir</a></li>
-            <li><a href="#" class="hover:text-blue-800 transition">Tentang</a></li>
-            <li><a href="#" class="hover:text-blue-800 transition">Kontak</a></li>
-        </ul>
+<nav class="bg-white shadow-sm border-b border-gray-200">
+    <div class="container px-6 py-3 flex items-center justify-between">
+        <a href="/" class="flex items-center gap-2 text-xl font-semibold text-blue-600 hover:text-blue-800">
+            <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-7 h-7">
+            FloodRescue
+        </a>
     </div>
 </nav>
