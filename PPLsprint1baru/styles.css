@@ -1,0 +1,142 @@
+:root {
+    --primary-color: #2B6CB0;
+    --secondary-color: #4299E1;
+    --text-color: #2D3748;
+    --light-gray: #EDF2F7;
+    --white: #FFFFFF;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+/* Navigation */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 5%;
+    background: var(--white);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+/* Hero Section */
+.hero {
+    background: linear-gradient(rgba(43, 108, 176, 0.9), rgba(43, 108, 176, 0.9)),
+                url('assets/hero-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    color: var(--white);
+    padding: 8rem 5%;
+    text-align: center;
+}
+
+.hero-content h1 {
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+}
+
+.cta-button {
+    background: var(--white);
+    color: var(--primary-color);
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 2rem;
+}
+
+/* Advantages Section */
+.advantages {
+    padding: 5rem 5%;
+    background: var(--light-gray);
+}
+
+.advantages-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.advantage-card {
+    background: var(--white);
+    padding: 2rem;
+    border-radius: 8px;
+    text-align: center;
+}
+
+/* Testimonials Section */
+.testimonials {
+    padding: 5rem 5%;
+}
+
+.testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.testimonial-card {
+    background: var(--white);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+/* Services Section */
+.services {
+    padding: 5rem 5%;
+    background: var(--light-gray);
+}
+
+.services-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.service-item {
+    background: var(--white);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .advantages-grid,
+    .testimonials-grid,
+    .services-container {
+        grid-template-columns: 1fr;
+    }
+}
