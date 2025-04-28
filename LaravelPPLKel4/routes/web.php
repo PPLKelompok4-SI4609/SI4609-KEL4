@@ -6,8 +6,11 @@ use App\Http\Controllers\admin\AdminLaporanController;
 use App\Http\Controllers\WeatherController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CleaningController;
-
-
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\TwoFactorController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 
 Route::get('/', function () {
     return view('landing');
@@ -31,6 +34,31 @@ Route::put('/articles/{article}', [ArticleController::class, 'update'])->name('a
 Route::delete('/articles/{article}', [ArticleController::class, 'destroy'])->name('articles.destroy');
 
 Route::get('/pasca-banjir', [CleaningController::class, 'index'])->name('pasca-banjir.index');
+
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [LoginController::class, 'login']);
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+// Registration Routes
+Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [RegisterController::class, 'register']);
+
+// Two Factor Authentication Routes
+Route::middleware(['auth'])->group(function () {
+    Route::get('/two-factor', [TwoFactorController::class, 'show'])->name('two-factor.show');
+    Route::post('/two-factor', [TwoFactorController::class, 'store'])->name('two-factor.verify');
+    Route::post('/two-factor/resend', [TwoFactorController::class, 'resend'])->name('two-factor.resend');
+});
+
+// Password Reset Routes
+Route::get('password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])
+    ->name('password.request');
+Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])
+    ->name('password.email');
+Route::get('password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])
+    ->name('password.reset');
+Route::post('password/reset', [ResetPasswordController::class, 'reset'])
+    ->name('password.update');
 
 
 
