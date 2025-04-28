@@ -1,18 +1,16 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
+use App\Http\Controllers\LaporanBanjirController;
+use App\Http\Controllers\admin\AdminLaporanController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('landing');
 });
+
+Route::get('/laporan-banjir', [LaporanBanjirController::class, 'create'])->name('laporan-banjir.create');
+Route::post('/laporan-banjir', [LaporanBanjirController::class, 'store'])->name('laporan-banjir.store');
+Route::get('/status-laporan', [LaporanBanjirController::class, 'index'])->name('laporan-banjir.status');
+
+Route::get('/admin/laporan', [AdminLaporanController::class, 'index'])->name('admin.laporan.index');
+Route::put('/admin/laporan/{id}/status', [AdminLaporanController::class, 'updateStatus'])->name('admin.laporan.updateStatus');
