@@ -16,31 +16,38 @@
   <div class="container">
     <!-- Logo di kiri -->
     <a class="navbar-brand" href="#">
-      <img src="https://getbootstrap.com/docs/4.6/assets/brand/bootstrap-solid.svg" width="30" height="30" alt="">
+      <img src="./image/logo.png" width="30" height="30" alt="">
     </a>
 
     <!-- Navbar menu ditengah -->
     <div class="mx-auto">
       <ul class="navbar-nav d-flex flex-row">
         <li class="nav-item px-2">
-          <a class="nav-link" href="#">Home</a>
+          <a class="nav-link" href="#">Donasi & Bantuan</a>
         </li>
         <li class="nav-item px-2">
-          <a class="nav-link" href="#">Link</a>
+          <a class="nav-link" href="#">Layanan Bersih-bersih</a>
         </li>
         <li class="nav-item px-2">
-          <a class="nav-link" href="#">Link</a>
+          <a class="nav-link" href="#">Layanan Bersih-Bersih Pasca Banjir</a>
         </li>
         <li class="nav-item px-2">
-          <a class="nav-link" href="#">Link</a>
+          <a class="nav-link" href="#">Form Laporan Kejadian Banjir</a>
         </li>
         <li class="nav-item px-2">
-          <a class="nav-link" href="#">Link</a>
+          <a class="nav-link" href="#">Peta Wilayah</a>
         </li>
       </ul>
     </div>
     <a class="navbar-brand" href="#">
-      <img src="https://getbootstrap.com/docs/4.6/assets/brand/bootstrap-solid.svg" width="30" height="30" alt="">
+    <dotlottie-player
+  src="https://lottie.host/06e4e57a-f9d6-443c-ab07-6de34da61307/DHBDrVzYes.lottie"
+  background="transparent"
+  speed="1"
+  style="width: 30px; height: 30px"
+  loop
+  autoplay
+></dotlottie-player>
     </a>
   </div>
 </nav>
@@ -54,8 +61,8 @@
       <h1 class="display-4 font-weight-bold">FloodRescue</h1>
       <br>
       <p class="lead">FloodRescue hadir sebagai solusi cepat untuk bantu kamu menghadapi banjir. Dari info prakiraan banjir, nomor darurat, hingga layanan bantuan — semua bisa kamu akses di satu tempat. Karena keselamatanmu adalah prioritas kami.</p>
-      <a href="#" class="btn btn-primary btn-lg button1">Fitur 1</a>
-      <a href="#" class="btn btn-primary btn-lg button1">Fitur 2</a>
+      <a href="#" class="btn btn-primary btn-lg button1">Bantuan Darurat</a>
+      <a href="#" class="btn btn-primary btn-lg button1">Artikel & Edukasi</a>
     </div>
     </div>
     <div class="col">
