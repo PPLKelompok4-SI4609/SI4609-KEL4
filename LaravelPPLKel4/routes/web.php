@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LaporanBanjirController;
 use App\Http\Controllers\admin\AdminLaporanController;
+use App\Http\Controllers\WeatherController;
 
 Route::get('/', function () {
     return view('landing');
@@ -14,3 +15,5 @@ Route::get('/status-laporan', [LaporanBanjirController::class, 'index'])->name('
 
 Route::get('/admin/laporan', [AdminLaporanController::class, 'index'])->name('admin.laporan.index');
 Route::put('/admin/laporan/{id}/status', [AdminLaporanController::class, 'updateStatus'])->name('admin.laporan.updateStatus');
+
+Route::get('/cuaca', [WeatherController::class, 'index'])->name('cuaca.index');
