@@ -16,7 +16,7 @@
             <a href="#" class="bg-blue-500 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-2xl transition duration-300">
                 Bantuan Darurat
             </a>
-            <a href="#" class="bg-blue-500 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-2xl transition duration-300">
+            <a href="/articles" class="bg-blue-500 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-2xl transition duration-300">
                 Artikel & Edukasi
             </a>
         </div>
