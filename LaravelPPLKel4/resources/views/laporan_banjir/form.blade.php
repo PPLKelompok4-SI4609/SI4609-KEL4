@@ -3,40 +3,59 @@
 @section('title', 'FloodRescue | Form Laporan Banjir')
 
 @section('content')
-<div class="max-w-xl mx-auto bg-white p-8 rounded-2xl shadow-lg">
-    <h1 class="text-3xl font-bold mb-6 text-center" style="color:#2db9f0;">Form Laporan Banjir Darurat</h1>
+<style>
+    .input-style {
+        @apply w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400;
+    }
+</style>
+
+<div class="flex justify-center gap-4 mb-6">
+    <a href="{{ route('laporan-banjir.create') }}"
+       class="px-4 py-2 rounded-md text-sm font-medium transition
+       {{ request()->routeIs('laporan-banjir.create') ? 'bg-blue-600 text-white' : 'bg-white text-gray-700 hover:bg-gray-200' }}">
+        Form Laporan
+    </a>
+    <a href="{{ route('laporan-banjir.status') }}"
+       class="px-4 py-2 rounded-md text-sm font-medium transition
+       {{ request()->routeIs('laporan-banjir.status') ? 'bg-blue-600 text-white' : 'bg-white text-gray-700 hover:bg-gray-200' }}">
+        Status Laporan
+    </a>
+</div>
+
+<div class="max-w-lg mx-auto bg-white p-6 rounded-xl shadow-md space-y-6">
+    <h1 class="text-2xl font-bold text-gray-800 text-center">Form Laporan Banjir</h1>
 
     @if (session('success'))
-        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
+        <div class="bg-green-100 border border-green-300 text-green-700 p-3 rounded">
             {{ session('success') }}
         </div>
     @endif
 
-    <form action="{{ route('laporan-banjir.store') }}" method="POST" enctype="multipart/form-data" class="space-y-5">
+    <form action="{{ route('laporan-banjir.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
         @csrf
 
         <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Nama</label>
+            <label class="block mb-1 text-sm font-medium text-gray-700">Nama</label>
             <input type="text" name="nama" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-300" required>
         </div>
 
         <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Lokasi</label>
+            <label class="block mb-1 text-sm font-medium text-gray-700">Lokasi</label>
             <input type="text" name="lokasi" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-300" required>
         </div>
 
         <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Deskripsi</label>
+            <label class="block mb-1 text-sm font-medium text-gray-700">Deskripsi</label>
             <textarea name="deskripsi" rows="4" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-300" required></textarea>
         </div>
 
         <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Kontak</label>
+            <label class="block mb-1 text-sm font-medium text-gray-700">Kontak</label>
             <input type="text" name="kontak" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-300" required>
         </div>
 
         <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Foto Kejadian</label>
+            <label class="block mb-1 text-sm font-medium text-gray-700">Foto Kejadian</label>
             <div id="imagePreview" class="mb-3 border rounded-lg p-2 text-center text-gray-500 bg-gray-50">
                 <p>No image selected</p>
             </div>
@@ -50,7 +69,7 @@
         </div>
 
         <div class="text-right">
-            <button type="submit" class="bg-green-600 hover:bg-green-800 text-white px-6 py-2 rounded-lg transition duration-200">
+            <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white text-sm font-semibold px-6 py-2 rounded-md transition">
                 Kirim Laporan
             </button>
         </div>

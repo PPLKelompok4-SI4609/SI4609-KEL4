@@ -7,6 +7,12 @@ use App\Models\LaporanBanjir;
 
 class LaporanBanjirController extends Controller
 {
+    public function index()
+    {
+        $laporans = LaporanBanjir::all();
+        return view('laporan_banjir.status-laporan', compact('laporans'));
+    }
+
     public function create()
     {
         return view('laporan_banjir.form');
@@ -19,7 +25,10 @@ class LaporanBanjirController extends Controller
             'deskripsi' => 'required|string',
             'kontak' => 'required|string|max:20',
             'foto' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-
+        ], [
+            'foto.image' => 'File yang diunggah harus berupa gambar.',
+            'foto.mimes' => 'Format file tidak didukung. Hanya JPEG, PNG, JPG, dan GIF.',
+            'foto.max' => 'Ukuran gambar tidak boleh lebih dari 2MB.',
         ]);
 
         $fotoPath = null;
@@ -33,7 +42,8 @@ class LaporanBanjirController extends Controller
             'deskripsi' => $request->deskripsi,
             'kontak' => $request->kontak,
             'foto' => $fotoPath,
-        ]);
+            'status' => 'Dikirim',
+        ]);        
 
         return redirect()->back()->with('success', 'Laporan berhasil dikirim!');
     }
