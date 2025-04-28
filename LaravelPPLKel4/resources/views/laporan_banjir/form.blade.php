@@ -23,7 +23,7 @@
 </div>
 
 <div class="max-w-lg mx-auto bg-white p-6 rounded-xl shadow-md space-y-6">
-    <h1 class="text-2xl font-bold text-blue-600 text-center">Form Laporan Banjir</h1>
+    <h1 class="text-2xl font-bold text-gray-800 text-center">Form Laporan Banjir</h1>
 
     @if (session('success'))
         <div class="bg-green-100 border border-green-300 text-green-700 p-3 rounded">
@@ -69,7 +69,7 @@
         </div>
 
         <div class="text-right">
-            <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-md transition">
+            <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white text-sm font-semibold px-6 py-2 rounded-md transition">
                 Kirim Laporan
             </button>
         </div>
