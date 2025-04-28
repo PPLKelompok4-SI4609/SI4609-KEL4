@@ -9,7 +9,12 @@
         <!-- Menu Tengah -->
         <ul class="hidden md:flex space-x-6 text-gray-700 font-medium">
             <li><a href="#" class="hover:text-blue-600 transition">Donasi & Bantuan</a></li>
-            <li><a href="#" class="hover:text-blue-600 transition">Layanan Pasca Banjir</a></li>
+            <li>
+                <a href="/pasca-banjir"
+                class="{{ Request::is('pasca-banjir') ? 'text-blue-700 font-semibold' : 'text-gray-700 hover: hover:text-blue-600' }}">
+                Layanan Pasca Banjir
+                </a>
+            </li>
             <li>
                 <a href="/laporan-banjir"
                 class="{{ Request::is('laporan-banjir') || Request::is('status-laporan') ? 'text-blue-700 font-semibold' : 'text-gray-700 hover: hover:text-blue-600' }}">
@@ -19,7 +24,7 @@
             <li>
                 <a href="/cuaca" 
                 class="{{ Request::is('cuaca*') ? 'text-blue-700 font-semibold' : 'text-gray-700 hover:text-blue-600' }}">
-                    Info Cuaca
+                Info Cuaca
                 </a>
             </li>
             <li><a href="#" class="hover:text-blue-600 transition">Peta Wilayah</a></li>

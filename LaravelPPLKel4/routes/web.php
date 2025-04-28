@@ -5,6 +5,8 @@ use App\Http\Controllers\LaporanBanjirController;
 use App\Http\Controllers\admin\AdminLaporanController;
 use App\Http\Controllers\WeatherController;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\CleaningController;
+
 
 
 Route::get('/', function () {
@@ -24,9 +26,12 @@ Route::get('/articles', [ArticleController::class, 'index'])->name('articles.ind
 Route::get('/articles/create', [ArticleController::class, 'create'])->name('articles.create');
 Route::post('/articles', [ArticleController::class, 'store'])->name('articles.store');
 Route::get('/articles/{id}', [ArticleController::class, 'show'])->name('articles.show');
-Route::get('/articles/{article}/edit', [ArticleController::class, 'edit'])->name('articles.edit'); // Edit route
-Route::put('/articles/{article}', [ArticleController::class, 'update'])->name('articles.update'); // Update route
-Route::delete('/articles/{article}', [ArticleController::class, 'destroy'])->name('articles.destroy'); // Delete route
+Route::get('/articles/{article}/edit', [ArticleController::class, 'edit'])->name('articles.edit');
+Route::put('/articles/{article}', [ArticleController::class, 'update'])->name('articles.update');
+Route::delete('/articles/{article}', [ArticleController::class, 'destroy'])->name('articles.destroy');
+
+Route::get('/pasca-banjir', [CleaningController::class, 'index'])->name('pasca-banjir.index');
+
 
 
 
