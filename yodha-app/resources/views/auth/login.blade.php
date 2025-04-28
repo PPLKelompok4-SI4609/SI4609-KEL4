@@ -1,35 +1,23 @@
 @extends('layouts.app')
 
 @section('content')
-@if(session('error') || session('success'))
-    @php
-        $type = session('error') ? 'error' : 'success';
-        $message = session($type);
-        $bgColor = $type === 'error' ? 'bg-red-500' : 'bg-green-500';
-        $id = $type . 'Message';
-        $closeFunction = 'close' . ucfirst($type) . 'Message';
-    @endphp
-
-    <div id="{{ $id }}" class="{{ $bgColor }} text-white p-4 rounded-lg mb-6 relative">
-        <span>{{ $message }}</span>
-        <button class="absolute right-5 text-white font-bold" onclick="{{ $closeFunction }}()">X</button>
-    </div>
-
-    <script>
-        function {{ $closeFunction }}() {
-            document.getElementById('{{ $id }}').classList.add('hidden');
+<style>
+        main{
+            color: red;
+            font-size: 18px;
         }
-
-        setTimeout(function() {
-            var el = document.getElementById('{{ $id }}');
-            if (el) el.classList.add('hidden');
-        }, 5000);
-    </script>
-@endif
-
+        b{
+            background-color: #f5f5f5;
+        }
+    </style>
 <div class="flex justify-center items-center min-h-[80vh]">
     <div class="w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
-        <h2 class="text-2xl font-semibold text-center text-gray-800 mb-6">Login</h2>
+        <div class="text-center mb-8">
+            <img src="{{ asset('images/logo.png') }}" alt="FloodRescue Logo" class="h-16 mx-auto mb-4">
+            <h2 class="text-2xl font-bold text-blue-600">FloodRescue</h2>
+            <p class="text-gray-600">Bersama Lawan Banjir!</p>
+        </div>
+
         <form method="POST" action="{{ route('login') }}">
             @csrf
 
@@ -51,17 +39,27 @@
                 @enderror
             </div>
 
-            <div class="flex items-center mb-6">
-                <input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}
-                    class="mr-2">
-                <label for="remember" class="text-sm text-gray-600">Remember Me</label>
+            <div class="flex items-center justify-between mb-6">
+                <label class="flex items-center">
+                    <input type="checkbox" name="remember" class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                    <span class="ml-2 text-sm text-gray-600">Ingat saya</span>
+                </label>
+                <a href="{{ route('password.request') }}" class="text-sm text-blue-600 hover:underline">
+                    Lupa password?
+                </a>
             </div>
 
-            <div class="flex justify-center items-center">
-                <button type="submit"
-                    class="bg-blue-500 text-white px-6 py-2 rounded-full hover:bg-blue-600 transition-all duration-200">
+            <div class="flex justify-center">
+                <button type="submit" class="bg-blue-500 text-white px-6 py-2 rounded-full hover:bg-blue-600 transition-all duration-200">
                     Login
                 </button>
+            </div>
+
+            <div class="mt-4 text-center">
+                <p class="text-sm text-gray-600">
+                    Belum punya akun? 
+                    <a href="{{ route('register') }}" class="text-blue-600 hover:underline">Register</a>
+                </p>
             </div>
         </form>
     </div>
