@@ -22,7 +22,7 @@ class WeatherController extends Controller
         ]);
 
         if ($currentWeather->failed()) {
-            return redirect('/')->with('error', 'Kota tidak ditemukan atau data tidak tersedia.');
+            return redirect('/cuaca')->with('error', 'Kota tidak ditemukan atau data tidak tersedia.');
         }
 
         $weatherData = $currentWeather->json();
@@ -58,7 +58,7 @@ class WeatherController extends Controller
             ];
         })->take(8);
 
-        return view('index', [
+        return view('/cuaca.index', [
             'currentWeatherData' => $weatherData,
             'dailyForecasts' => $dailyForecasts,
             'weeklyForecasts' => $weeklyForecasts,
