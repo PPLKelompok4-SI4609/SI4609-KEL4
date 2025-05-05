@@ -30,6 +30,7 @@ class RegisterController extends Controller
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
                 'phone_number' => $request->phone_number,
+                'role' => 'user',
                 'data_access_settings' => json_encode(['public' => false]),
                 'two_factor_enabled' => true,
             ]);
@@ -37,8 +38,8 @@ class RegisterController extends Controller
             Auth::login($user);
             $request->session()->regenerate();
 
-            return redirect()->route('two-factor.index') // Ubah dari show ke index
-                           ->with('success', 'Registrasi berhasil! Silakan verifikasi akun Anda.');
+            return redirect()->route('login') // Ubah dari show ke index
+                           ->with('success', 'Registrasi berhasil! Silakan Login.');
         } catch (\Exception $e) {
             return back()->withErrors(['error' => 'Terjadi kesalahan saat registrasi. Silakan coba lagi.'])
                         ->withInput($request->except('password'));
