@@ -23,23 +23,35 @@ class LoginController extends Controller
             'password' => ['required'],
         ]);
 
-        if (Auth::attempt($credentials, $request->filled('remember'))) {
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate(); // Tambahkan ini untuk keamanan
             $user = Auth::user();
-            $user->generateTwoFactorCode();
+            
+            if ($user->two_factor_enabled) {
+                $user->generateTwoFactorCode();
+                session(['two_factor_user_id' => $user->id]);
+                
+                try {
+                    // Pastikan $user adalah instance dari model User
+                    if (!$user->two_factor_code) {
+                        throw new \Exception('Kode verifikasi tidak dapat dibuat.');
+                    }
+                    
+                    Mail::to($user->email)->send(new TwoFactorCode($user));
+                } catch (\Exception $e) {
+                    \Log::error('Two Factor Auth Error: ' . $e->getMessage());
+                    return back()->withErrors(['email' => 'Gagal mengirim kode verifikasi. Silakan coba lagi.']);
+                }
+                
+                return redirect()->route('two-factor.index');
+            }
 
-            // Kirim kode verifikasi via email
-            Mail::to($user->email)->send(new TwoFactorCode($user));
-
-            // Kirim kode verifikasi via WhatsApp
-            $whatsapp = new WhatsAppService();
-            $whatsapp->sendMessage($user->phone_number, 'Kode verifikasi FloodRescue Anda: ' . $user->two_factor_code);
-
-            return redirect()->route('two-factor.show');
+            return redirect()->intended('dashboard');
         }
 
         return back()->withErrors([
             'email' => 'Email atau password yang Anda masukkan salah.',
-        ]);
+        ])->withInput($request->only('email'));
     }
 
     public function logout(Request $request)
@@ -50,3 +62,4 @@ class LoginController extends Controller
         return redirect('/');
     }
 }
+

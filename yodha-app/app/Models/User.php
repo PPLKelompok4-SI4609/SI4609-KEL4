@@ -4,11 +4,15 @@ namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+<<<<<<< Updated upstream:yodha-app/app/Models/User.php
 use App\Traits\EncryptsAttributes;
+=======
+use App\Traits\EncryptAttributes;
+>>>>>>> Stashed changes:LaravelPPLKel4/app/Models/User.php
 
 class User extends Authenticatable
 {
-    use Notifiable, EncryptsAttributes;
+    use Notifiable, EncryptAttributes;
 
     protected $fillable = [
         'name',
@@ -36,6 +40,9 @@ class User extends Authenticatable
         $this->two_factor_code = rand(100000, 999999);
         $this->two_factor_expires_at = now()->addMinutes(10);
         $this->save();
+        
+        \Mail::to($this->email)->send(new \App\Mail\TwoFactorCode($this->two_factor_code));
+        \Log::info('Two Factor Code generated for user: ' . $this->email . ' - Code: ' . $this->two_factor_code);
     }
 
     public function resetTwoFactorCode()
