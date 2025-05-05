@@ -449,7 +449,7 @@ section#top-cities a.city-card img {
     <!-- Search Form -->
     <form
         id="inline-search-form"
-        action="/"
+        action="/cuaca/"
         method="GET"
         role="search"
         aria-label="Search for a city"

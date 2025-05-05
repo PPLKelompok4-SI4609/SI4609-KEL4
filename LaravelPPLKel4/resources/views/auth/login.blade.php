@@ -1,21 +1,23 @@
 @extends('layouts.app')
 
+@section('title', 'FloodRescue | Login')
+
 @section('content')
 <style>
-        main{
-            color: red;
-            font-size: 18px;
-        }
-        b{
-            background-color: #f5f5f5;
-        }
-    </style>
+    main {
+        color: black;
+        font-size: 18px;
+    }
+    b {
+        background-color: #f5f5f5;
+    }
+</style>
 <div class="flex justify-center items-center min-h-[80vh]">
     <div class="w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
         <div class="text-center mb-8">
-            <img src="{{ asset('images/logo.png') }}" alt="FloodRescue Logo" class="h-16 mx-auto mb-4">
-            <h2 class="text-2xl font-bold text-blue-600">FloodRescue</h2>
-            <p class="text-gray-600">Bersama Lawan Banjir!</p>
+            <img src="{{ asset('images/logo.png') }}" alt="FloodRescue Logo" class="h-32 mx-auto mb-4"> <!-- Mengubah h-16 menjadi h-32 -->
+            <h2 class="text-3xl font-bold text-blue-600">FloodRescue</h2> <!-- Mengubah text-2xl menjadi text-3xl -->
+            <p class="text-gray-600 text-lg">Bersama Lawan Banjir!</p> <!-- Menambahkan text-lg -->
         </div>
 
         <form method="POST" action="{{ route('login') }}">

@@ -4,14 +4,14 @@
 
 @section('content')
 <div class="flex justify-center gap-4 mb-8">
-    <a href="{{ route('laporan-banjir.create') }}"
+    <a href="{{ route('laporan.create') }}"
        class="px-4 py-2 rounded-md text-sm font-semibold transition
-       {{ request()->routeIs('laporan-banjir.create') ? 'bg-blue-500 text-white' : 'bg-white text-gray-700 hover:bg-gray-300' }}">
+       {{ request()->routeIs('laporan.create') ? 'bg-blue-500 text-white' : 'bg-white text-gray-700 hover:bg-gray-300' }}">
         Form Laporan
     </a>
-    <a href="{{ route('laporan-banjir.status') }}"
+    <a href="{{ route('laporan.status') }}"
        class="px-4 py-2 rounded-md text-sm font-semibold transition
-       {{ request()->routeIs('laporan-banjir.status') ? 'bg-blue-500 text-white' : 'bg-white text-gray-700 hover:bg-gray-300' }}">
+       {{ request()->routeIs('laporan.status') ? 'bg-blue-500 text-white' : 'bg-white text-gray-700 hover:bg-gray-300' }}">
         Status Laporan
     </a>
 </div>

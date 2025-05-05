@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'FloodRescue | Article Details')
+
 @section('content')
 <div class="bg-white text-gray-900">
 

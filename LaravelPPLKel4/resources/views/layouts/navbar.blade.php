@@ -10,14 +10,14 @@
         <ul class="hidden md:flex space-x-6 text-gray-700 font-medium">
             <li><a href="#" class="hover:text-blue-600 transition">Donasi & Bantuan</a></li>
             <li>
-                <a href="/pasca-banjir"
-                class="{{ Request::is('pasca-banjir') ? 'text-blue-700 font-semibold' : 'text-gray-700 hover: hover:text-blue-600' }}">
+                <a href="/pasca"
+                class="{{ Request::is('pasca') ? 'text-blue-700 font-semibold' : 'text-gray-700 hover: hover:text-blue-600' }}">
                 Layanan Pasca Banjir
                 </a>
             </li>
             <li>
-                <a href="/laporan-banjir"
-                class="{{ Request::is('laporan-banjir') || Request::is('status-laporan') ? 'text-blue-700 font-semibold' : 'text-gray-700 hover: hover:text-blue-600' }}">
+                <a href="/laporan"
+                class="{{ Request::is('laporan') || Request::is('status') ? 'text-blue-700 font-semibold' : 'text-gray-700 hover: hover:text-blue-600' }}">
                 Form Laporan Banjir
                 </a>
             </li>
@@ -29,17 +29,44 @@
             </li>
             <li><a href="#" class="hover:text-blue-600 transition">Peta Wilayah</a></li>
         </ul>
+        
+        <div>
+            @auth
+                <div class="flex items-center space-x-6">
+                    <div class="flex items-center space-x-3">
+                        <dotlottie-player
+                            src="https://lottie.host/06e4e57a-f9d6-443c-ab07-6de34da61307/DHBDrVzYes.lottie"
+                            background="transparent"
+                            speed="1"
+                            style="width: 30px; height: 30px;"
+                            loop
+                            autoplay>
+                        </dotlottie-player>
+                        <div class="text-left leading-tight">
+                            <p class="text-sm font-semibold text-gray-800">
+                                {{ Auth::user()->name }}
+                            </p>
+                            <p class="text-xs text-gray-500">
+                                {{ Auth::user()->email }}
+                            </p>
+                        </div>
+                    </div>
 
-        <!-- Lottie Icon Kanan -->
-        <div class="flex items-center">
-            <dotlottie-player
-                src="https://lottie.host/06e4e57a-f9d6-443c-ab07-6de34da61307/DHBDrVzYes.lottie"
-                background="transparent"
-                speed="1"
-                style="width: 30px; height: 30px;"
-                loop
-                autoplay>
-            </dotlottie-player>
+                    <form method="POST" action="{{ route('logout') }}" class="inline">
+                    @csrf
+                        <button type="submit"
+                                class="bg-red-500 text-white px-6 py-2 rounded-full hover:bg-red-600 transition duration-300">
+                            Logout
+                        </button>
+                    </form>
+                </div>
+            @else
+                @if (Request::is('login'))
+                    <a href="/register" class="bg-blue-500 text-white px-6 py-2 rounded-full hover:bg-blue-600 transition duration-300">Register</a>
+                @else
+                    <a href="/login" class="bg-blue-500 text-white px-6 py-2 rounded-full hover:bg-blue-600 transition duration-300">Login</a>
+                @endif
+            @endauth
         </div>
     </div>
 </nav>

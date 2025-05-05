@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'FloodRescue | Create Article')
+
 @section('content')
 <div class="max-w-3xl mx-auto px-4 py-10">
     <div class="bg-white shadow-2xl rounded-2xl p-8">

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'FloodRescue')
+@section('title', 'FloodRescue | Home')
 
 @section('content')
 <div class="flex flex-col md:flex-row items-center justify-between max-w-7xl mx-auto mt-24 px-6">

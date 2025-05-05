@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'FloodRescue | Edit Article')
+
 @section('content')
 <div class="container my-8">
     <h1 class="text-center mb-6 text-3xl font-bold text-black">Edit Article</h1>

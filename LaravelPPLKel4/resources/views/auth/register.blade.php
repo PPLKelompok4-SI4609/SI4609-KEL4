@@ -1,9 +1,12 @@
 @extends('layouts.app')
 
+@section('title', 'FloodRescue | Register')
+
 @section('content')
 <div class="flex justify-center items-center min-h-[80vh]">
     <div class="w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
-        <h2 class="text-2xl font-semibold text-center text-gray-800 mb-6">Register</h2>
+    <img src="{{ asset('images/logo.png') }}" alt="FloodRescue Logo" class="h-32 mx-auto mb-4">
+        <h2 class="text-2xl font-semibold text-center text-gray-800 mb-6">Register dulu yuk!</h2>
         <form method="POST" action="{{ route('register') }}">
             @csrf
 

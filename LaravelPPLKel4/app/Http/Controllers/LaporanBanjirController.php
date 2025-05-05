@@ -10,13 +10,14 @@ class LaporanBanjirController extends Controller
     public function index()
     {
         $laporans = LaporanBanjir::all();
-        return view('laporan_banjir.status-laporan', compact('laporans'));
+        return view('laporan.status', compact('laporans'));
     }
 
     public function create()
     {
-        return view('laporan_banjir.form');
+        return view('laporan.create');
     }
+
     public function store(Request $request)
     {
         $request->validate([
