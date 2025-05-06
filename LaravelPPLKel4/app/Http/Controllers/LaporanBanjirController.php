@@ -9,14 +9,15 @@ class LaporanBanjirController extends Controller
 {
     public function index()
     {
-        $laporans = LaporanBanjir::all();
-        return view('laporan_banjir.status-laporan', compact('laporans'));
+        $laporans = LaporanBanjir::where('user_id', auth()->id())->get();
+        return view('laporan.status', compact('laporans'));
     }
 
     public function create()
     {
-        return view('laporan_banjir.form');
+        return view('laporan.create');
     }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -37,13 +38,14 @@ class LaporanBanjirController extends Controller
         }
 
         LaporanBanjir::create([
+            'user_id' => auth()->id(),
             'nama' => $request->nama,
             'lokasi' => $request->lokasi,
             'deskripsi' => $request->deskripsi,
             'kontak' => $request->kontak,
             'foto' => $fotoPath,
             'status' => 'Dikirim',
-        ]);        
+        ]);               
 
         return redirect()->back()->with('success', 'Laporan berhasil dikirim!');
     }

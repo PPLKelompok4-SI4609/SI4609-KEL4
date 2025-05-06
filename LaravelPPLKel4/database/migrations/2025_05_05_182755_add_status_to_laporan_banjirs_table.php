@@ -9,14 +9,14 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up()
     {
         Schema::table('laporan_banjirs', function (Blueprint $table) {
             $table->string('status')->default('Dikirim');
         });
     }
 
-    public function down(): void
+    public function down()
     {
         Schema::table('laporan_banjirs', function (Blueprint $table) {
             $table->dropColumn('status');

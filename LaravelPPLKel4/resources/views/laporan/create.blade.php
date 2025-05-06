@@ -10,14 +10,14 @@
 </style>
 
 <div class="flex justify-center gap-4 mb-6">
-    <a href="{{ route('laporan-banjir.create') }}"
+    <a href="{{ route('laporan.create') }}"
        class="px-4 py-2 rounded-md text-sm font-medium transition
-       {{ request()->routeIs('laporan-banjir.create') ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
+       {{ request()->routeIs('laporan.create') ? 'bg-blue-600 text-white' : 'bg-white text-gray-700 hover:bg-gray-200' }}">
         Form Laporan
     </a>
-    <a href="{{ route('laporan-banjir.status') }}"
+    <a href="{{ route('laporan.status') }}"
        class="px-4 py-2 rounded-md text-sm font-medium transition
-       {{ request()->routeIs('laporan-banjir.status') ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
+       {{ request()->routeIs('laporan.status') ? 'bg-blue-600 text-white' : 'bg-white text-gray-700 hover:bg-gray-200' }}">
         Status Laporan
     </a>
 </div>
@@ -31,7 +31,7 @@
         </div>
     @endif
 
-    <form action="{{ route('laporan-banjir.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
+    <form action="{{ route('laporan.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
         @csrf
 
         <div>
