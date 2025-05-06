@@ -6,8 +6,8 @@
 <style>
     body {
         font-family: "Inter", sans-serif;
-        background-color: #e0f7fa;
-        color: #0d47a1;
+        background-color: #e0f7fa; /* Light blue background */
+        color: #0d47a1; /* Dark blue text */
         margin: 0;
         padding: 0;
         line-height: 1.6;
@@ -15,6 +15,7 @@
         position: relative;
         min-height: 100vh;
     }
+    /* Full viewport hero */
     #hero {
         height: 100vh;
         position: relative;
@@ -54,12 +55,13 @@
         cursor: pointer;
     }
     .btn-blue {
-        background-color: #2196f3;
+        background-color: #2196f3; /* Blue */
         color: white;
     }
     .btn-blue:hover {
-        background-color: #1976d2;
+        background-color: #1976d2; /* Darker Blue */
     }
+    /* Search toggle button */
     #search-toggle {
         position: absolute;
         top: 50%;
@@ -80,6 +82,7 @@
         outline: 2px solid #2563eb;
         outline-offset: 2px;
     }
+    /* Search form */
     #search-form {
         display: flex;
         gap: 0.75rem;
@@ -127,11 +130,13 @@
         background-color: #1e40af;
         outline: none;
     }
+    /* Forecast & Flood Risk spacing */
     #forecast-flood-container {
         max-width: 1120px;
         margin: 0 auto 3rem auto;
         padding: 0 1rem;
     }
+    /* Tabs container */
     .tabs {
         display: flex;
         justify-content: center;
@@ -156,6 +161,7 @@
         border-color: #1e40af;
         cursor: default;
     }
+    /* Forecast grids */
     .forecast {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -205,6 +211,7 @@
         color: #1e40af;
         margin-bottom: 0.25rem;
     }
+    /* Flood risk section */
     #flood-risk {
         max-width: 480px;
         margin: 3rem auto 0 auto;
@@ -241,6 +248,7 @@
         margin-top: 1rem;
         color: #1e40af;
     }
+    /* Top Cities Section */
     section#top-cities {
         max-width: 1120px;
         margin: 3rem auto 3rem auto;
@@ -301,11 +309,13 @@
         object-fit: cover;
         box-shadow: 0 1px 2px rgb(0 0 0 / 0.1);
     }
+    /* Section separators */
     .section-separator {
         max-width: 1120px;
         margin: 3rem auto 3rem auto;
         border-top: 1.5px solid #cbd5e1;
     }
+    /* Search form */
     #inline-search-form {
         max-width: 480px;
         margin: 2rem auto 3rem auto;
@@ -379,14 +389,14 @@
     ];
     $bgGradient = $gradients[$condition] ?? $gradients['clear'];
 
-    // Determine rainfall amount for flood risk intensity text
+    // Determine rainfall amount for flood risk intensity
     $rainfallAmount = 0;
     if (isset($currentWeatherData['rain']['1h'])) {
         $rainfallAmount = $currentWeatherData['rain']['1h'];
     } elseif (isset($currentWeatherData['rain']['3h'])) {
         $rainfallAmount = $currentWeatherData['rain']['3h'];
     }
-    // Determine rain intensity text
+    // Determine rain intensity
     if ($rainfallAmount > 20) {
         $rainIntensity = 'Very Heavy';
     } elseif ($rainfallAmount > 10) {
@@ -400,6 +410,7 @@
     }
     @endphp
 
+    <!-- Hero Section: Current Weather Status -->
     @if($currentWeatherData)
     <section id="hero" style="--bg-gradient: {{ $bgGradient }};">
         <img
@@ -461,6 +472,7 @@
     </section>
     @endif
 
+    <!-- Search Form -->
     <form
         id="inline-search-form"
         action="/cuaca"
@@ -485,8 +497,10 @@
         </button>
     </form>
 
+    <!-- Separator -->
     <div aria-hidden="true" class="section-separator"></div>
 
+    <!-- Forecast & Flood Risk Section -->
     <section aria-label="Forecast and Flood Risk" id="forecast-flood-container">
         @if($dailyForecasts && $weeklyForecasts)
             <div aria-label="Forecast Tabs" class="tabs" role="tablist">
@@ -516,6 +530,7 @@
                 </button>
             </div>
 
+            <!-- Daily Forecast -->
             <div aria-labelledby="btn-daily" class="forecast-container" id="daily" role="tabpanel">
                 <div class="forecast">
                     @foreach($dailyForecasts as $day)
@@ -541,6 +556,7 @@
                 </div>
             </div>
 
+            <!-- Weekly Forecast -->
             <div aria-labelledby="btn-weekly" class="forecast-container hidden" id="weekly" role="tabpanel">
                 <div class="forecast">
                     @foreach($weeklyForecasts as $week)
@@ -563,8 +579,10 @@
                 </div>
             </div>
 
+            <!-- Separator -->
             <div aria-hidden="true" class="section-separator"></div>
 
+            <!-- Flood Risk Prediction -->
             @if(isset($floodRisk))
                 <section aria-label="Flood Risk Prediction" id="flood-risk" role="region" class="@if($floodRisk === 'High') high @elseif($floodRisk === 'Medium') medium @else low @endif">
                     <h2>
@@ -612,8 +630,10 @@
         @endif
     </section>
 
+    <!-- Separator -->
     <div aria-hidden="true" class="section-separator"></div>
 
+    <!-- Top Cities Section -->
     <section aria-label="Top Cities" id="top-cities">
         <h2>Top Cities</h2>
         <div class="grid" role="list">
