@@ -17,7 +17,7 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 // Halaman Awal / Umum
 // =======================
 Route::get('/', function () {
-    return view('home');
+    return view('welcome');
 });
 
 // =======================
@@ -28,9 +28,16 @@ Route::get('/welcome', function () {
 })->name('welcome');
 
 // =======================
+// Halaman Home
+// =======================
+Route::get('/home', function () {
+    return view('home');
+})->name('home');
+
+// =======================
 // Laporan Banjir (User)
 // =======================
-Route::prefix('laporan')->middleware(['auth'])->group(function () {
+Route::prefix('laporan')->middleware(['auth', '2fa', 'role:user'])->group(function () {
     Route::get('/', [LaporanBanjirController::class, 'create'])->name('laporan.create');
     Route::post('/', [LaporanBanjirController::class, 'store'])->name('laporan.store');
     Route::get('/status', [LaporanBanjirController::class, 'index'])->name('laporan.status');
@@ -43,12 +50,13 @@ Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('/laporan', [AdminLaporanController::class, 'index'])->name('admin.laporan.index');
     Route::put('/laporan/{id}/status', [AdminLaporanController::class, 'updateStatus'])->name('admin.laporan.updateStatus');
+    Route::delete('/laporan/{id}', [AdminLaporanController::class, 'destroy'])->name('admin.laporan.destroy');
 });
 
 // =======================
 // Artikel
 // =======================
-Route::prefix('articles')->middleware(['auth'])->group(function () {
+Route::prefix('articles')->middleware(['auth', '2fa', 'role:user'])->group(function () {
     Route::get('/', [ArticleController::class, 'index'])->name('articles.index');
     Route::get('/create', [ArticleController::class, 'create'])->name('articles.create');
     Route::post('/', [ArticleController::class, 'store'])->name('articles.store');
@@ -61,12 +69,12 @@ Route::prefix('articles')->middleware(['auth'])->group(function () {
 // =======================
 // Cuaca
 // =======================
-Route::get('/cuaca', [WeatherController::class, 'index'])->middleware('auth')->name('cuaca.index');
+Route::get('/cuaca', [WeatherController::class, 'index'])->middleware(['auth', '2fa' , 'role:user'])->name('cuaca.index');
 
 // =======================
 // Pasca Banjir
 // =======================
-Route::get('/pasca', [CleaningController::class, 'index'])->middleware('auth')->name('pasca.index');
+Route::get('/pasca', [CleaningController::class, 'index'])->middleware(['auth', '2fa' , 'role:user'])->name('pasca.index');
 
 // =======================
 // Autentikasi

@@ -14,7 +14,7 @@
 </head>
 <body class="min-h-screen bg-blue-100">
 <nav class="bg-white shadow">
-    <div class="container mx-auto flex items-center justify-center py-4 px-6">
+    <div class="container mx-auto flex items-center justify-between py-4 px-6">
         <span class="flex items-center gap-2 text-xl font-bold text-blue-600 hover:text-blue-700 transition">
             <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-8 h-8">
             FloodRescue

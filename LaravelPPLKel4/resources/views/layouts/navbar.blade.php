@@ -1,33 +1,33 @@
 <nav class="bg-white shadow">
     <div class="container mx-auto flex items-center justify-between py-4 px-6">
-        <!-- Logo Kiri -->
-        <a href="/" class="flex items-center gap-2 text-xl font-bold text-blue-600 hover:text-blue-700 transition">
+        <a href="/home" class="flex items-center gap-2 text-xl font-bold text-blue-600 hover:text-blue-700 transition">
             <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-8 h-8">
             FloodRescue
         </a>
 
-        <!-- Menu Tengah -->
         <ul class="hidden md:flex space-x-6 text-gray-700 font-medium">
-            <li><a href="#" class="hover:text-blue-600 transition">Donasi & Bantuan</a></li>
-            <li>
-                <a href="/pasca"
-                class="{{ Request::is('pasca') ? 'text-blue-700 font-semibold' : 'text-gray-700 hover: hover:text-blue-600' }}">
-                Layanan Pasca Banjir
-                </a>
-            </li>
-            <li>
-                <a href="/laporan"
-                class="{{ Request::is('laporan') || Request::is('status') ? 'text-blue-700 font-semibold' : 'text-gray-700 hover: hover:text-blue-600' }}">
-                Form Laporan Banjir
-                </a>
-            </li>
-            <li>
-                <a href="/cuaca" 
-                class="{{ Request::is('cuaca*') ? 'text-blue-700 font-semibold' : 'text-gray-700 hover:text-blue-600' }}">
-                Info Cuaca
-                </a>
-            </li>
-            <li><a href="#" class="hover:text-blue-600 transition">Peta Wilayah</a></li>
+            @if(auth()->check() && session('two_factor_verified'))
+                <li><a href="#" class="hover:text-blue-600 transition">Donasi & Bantuan</a></li>
+                <li>
+                    <a href="/pasca"
+                    class="{{ Request::is('pasca*') ? 'text-blue-700 font-semibold' : 'text-gray-700 hover: hover:text-blue-600' }}">
+                    Layanan Pasca Banjir
+                    </a>
+                </li>
+                <li>
+                    <a href="/laporan"
+                    class="{{ Request::is('laporan*') ? 'text-blue-700 font-semibold' : 'text-gray-700 hover: hover:text-blue-600' }}">
+                    Laporan Banjir
+                    </a>
+                </li>
+                <li>
+                    <a href="/cuaca" 
+                    class="{{ Request::is('cuaca*') ? 'text-blue-700 font-semibold' : 'text-gray-700 hover:text-blue-600' }}">
+                    Info Cuaca
+                    </a>
+                </li>
+                <li><a href="#" class="hover:text-blue-600 transition">Peta Wilayah</a></li>
+            @endif
         </ul>
         
         <div>

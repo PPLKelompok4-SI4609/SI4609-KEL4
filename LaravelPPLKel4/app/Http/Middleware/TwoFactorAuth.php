@@ -11,8 +11,8 @@ class TwoFactorAuth
     {
         $user = auth()->user();
 
-        if ($user && !session()->has('two_factor_verified')) {
-            return redirect()->route('two-factor.show');
+        if ($user && !session()->has('two_factor_verified') && $request->route()->getName() !== 'two-factor.index') {
+            return redirect()->route('two-factor.index');
         }
 
         return $next($request);

@@ -22,4 +22,12 @@ class AdminLaporanController extends Controller
 
         return redirect()->route('admin.laporan.index')->with('success', 'Status laporan berhasil diperbarui!');
     }
+    
+    public function destroy($id)
+    {
+        $laporan = LaporanBanjir::findOrFail($id);
+        $laporan->delete();
+
+        return redirect()->route('admin.laporan.index')->with('success', 'Laporan berhasil dihapus!');
+    }
 }

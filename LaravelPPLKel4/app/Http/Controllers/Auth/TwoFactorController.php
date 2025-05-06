@@ -35,7 +35,8 @@ class TwoFactorController extends Controller
             ]);
         }
 
-        session(['auth.two_factor_confirmed' => true]);
+        session(['two_factor_verified' => true]);
+
         $user->resetTwoFactorCode();
 
         return redirect()->intended('welcome');

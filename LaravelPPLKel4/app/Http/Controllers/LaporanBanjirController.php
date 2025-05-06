@@ -9,7 +9,7 @@ class LaporanBanjirController extends Controller
 {
     public function index()
     {
-        $laporans = LaporanBanjir::all();
+        $laporans = LaporanBanjir::where('user_id', auth()->id())->get();
         return view('laporan.status', compact('laporans'));
     }
 
@@ -38,13 +38,14 @@ class LaporanBanjirController extends Controller
         }
 
         LaporanBanjir::create([
+            'user_id' => auth()->id(),
             'nama' => $request->nama,
             'lokasi' => $request->lokasi,
             'deskripsi' => $request->deskripsi,
             'kontak' => $request->kontak,
             'foto' => $fotoPath,
             'status' => 'Dikirim',
-        ]);        
+        ]);               
 
         return redirect()->back()->with('success', 'Laporan berhasil dikirim!');
     }
