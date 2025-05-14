@@ -20,7 +20,7 @@
 @else
     <div class="grid gap-6">
         @foreach ($laporans as $laporan)
-            <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition border border-gray-200">
+            <div x-data="{ open: false }" class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition border border-gray-200">
                 <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
                     
                     <div class="flex items-start gap-4">
@@ -45,7 +45,13 @@
                                     {{ $laporan->status }}
                                 </span>
                             </p>
-                            <p class="mt-3 text-gray-700">{{ $laporan->deskripsi }}</p>
+                            <p class="mt-3 text-gray-700 line-clamp-2">{{ $laporan->deskripsi }}</p>
+                            <button 
+                                @click="open = true" 
+                                class="mt-3 bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm"
+                            >
+                                Lihat Detail
+                            </button>
                         </div>
                     </div>
 
@@ -86,6 +92,38 @@
                                 </button>
                             </form>
                         @endif
+                    </div>
+                </div>
+
+                <div 
+                    x-show="open" 
+                    x-cloak 
+                    x-transition 
+                    class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+                >
+                    <div 
+                        @click.away="open = false" 
+                        class="bg-white w-11/12 max-w-md p-6 rounded-xl shadow-xl relative"
+                    >
+                        <button 
+                            @click="open = false" 
+                            class="absolute top-3 right-4 text-gray-500 hover:text-red-500 text-xl"
+                        >
+                            &times;
+                        </button>
+                        <h3 class="text-xl font-bold text-blue-600 mb-4">Detail Laporan</h3>
+                        <div class="text-sm text-gray-700 space-y-2">
+                            <p><strong>Nama:</strong> {{ $laporan->nama }}</p>
+                            <p><strong>Lokasi:</strong> {{ $laporan->lokasi }}</p>
+                            <p><strong>Kontak:</strong> {{ $laporan->kontak }}</p>
+                            <p><strong>Status:</strong> {{ $laporan->status }}</p>
+                            <p><strong>Deskripsi:</strong> {{ $laporan->deskripsi }}</p>
+                            @if ($laporan->foto)
+                                <div class="mt-3">
+                                    <img src="{{ asset('storage/' . $laporan->foto) }}" alt="Foto" class="w-full rounded-lg shadow">
+                                </div>
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>

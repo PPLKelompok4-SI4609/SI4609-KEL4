@@ -52,8 +52,15 @@
                         </div>
                     </div>
 
+                    @if(Auth::user()->role === 'admin')
+                        <a href="/admin/dashboard"
+                        class="bg-green-500 text-white px-6 py-2 rounded-full hover:bg-green-600 transition duration-300">
+                            Dashboard
+                        </a>
+                    @endif
+
                     <form method="POST" action="{{ route('logout') }}" class="inline">
-                    @csrf
+                        @csrf
                         <button type="submit"
                                 class="bg-red-500 text-white px-6 py-2 rounded-full hover:bg-red-600 transition duration-300">
                             Logout
@@ -62,9 +69,15 @@
                 </div>
             @else
                 @if (Request::is('login'))
-                    <a href="/register" class="bg-blue-500 text-white px-6 py-2 rounded-full hover:bg-blue-600 transition duration-300">Register</a>
+                    <a href="/register"
+                    class="bg-blue-500 text-white px-6 py-2 rounded-full hover:bg-blue-600 transition duration-300">
+                        Register
+                    </a>
                 @else
-                    <a href="/login" class="bg-blue-500 text-white px-6 py-2 rounded-full hover:bg-blue-600 transition duration-300">Login</a>
+                    <a href="/login"
+                    class="bg-blue-500 text-white px-6 py-2 rounded-full hover:bg-blue-600 transition duration-300">
+                        Login
+                    </a>
                 @endif
             @endauth
         </div>
