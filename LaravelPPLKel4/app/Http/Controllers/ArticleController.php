@@ -4,19 +4,33 @@ namespace App\Http\Controllers;
 
 use App\Models\Article;
 use App\Models\User;
-use App\Notifications\FloodRescueEduNotification;
 use Illuminate\Http\Request;
+use App\Notifications\ArticlePublished;
+use Illuminate\Support\Facades\Notification;
+use App\Events\NewArticlePublished;
+use Illuminate\Support\Facades\Storage;
 
 class ArticleController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Mengambil artikel terbaru dengan pagination 10
-        $articles = Article::latest()->paginate(10);
-        return view('articles.index', compact('articles'));
+        $searchQuery = $request->input('search');
+        $category = $request->input('category');
+
+        $articles = Article::when($category, function ($query, $category) {
+            return $query->where('category', $category);
+        })
+        ->when($searchQuery, function ($query, $searchQuery) {
+            return $query->where('title', 'like', '%' . $searchQuery . '%')
+                         ->orWhere('content', 'like', '%' . $searchQuery . '%');
+        })
+        ->latest()
+        ->paginate(10);
+
+        return view('articles.index', compact('articles', 'searchQuery', 'category'));
     }
 
     /**
@@ -24,7 +38,6 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        // Menampilkan form untuk membuat artikel baru
         return view('articles.create');
     }
 
@@ -33,41 +46,36 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-        // Validasi dan simpan artikel baru
+        // Validasi input
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
-            'category' => 'required|string|max:255',
-            'image_url' => 'required|url',
+            'category' => 'required|in:Musim Kemarau,Musim Hujan',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-<<<<<<< Updated upstream
-        Article::create($request->all());
-        return redirect()->route('articles.index')->with('success', 'Article created successfully.');
-=======
-        // Check if there's an uploaded file
+        // Cek apakah ada file gambar yang di-upload
         $path = null;
         if ($request->hasFile('image')) {
-            // Store the file in storage/public/articles
             $path = $request->file('image')->store('articles', 'public');
         }
 
-        // Create a new article
+        // Membuat artikel baru
         $article = Article::create([
             'title' => $request->title,
             'content' => $request->content,
             'category' => $request->category,
-            'image_url' => $path, // Store the file path
+            'image_url' => $path,
         ]);
 
-        // Kirimkan notifikasi ke semua pengguna setelah artikel baru diposting
-        $users = User::all(); // Ambil semua pengguna
-        foreach ($users as $user) {
-            $user->notify(new FloodRescueEduNotification("Artikel baru diposting: " . $article->title));
-        }
+        // Trigger event untuk push notification
+        event(new NewArticlePublished($article));  // Menyebarkan event push notification
+
+        // Kirimkan email notifikasi ke semua pengguna
+        $users = User::all(); // Bisa difilter jika perlu
+        Notification::send($users, new ArticlePublished($article)); // Kirim email notification
 
         return redirect()->route('articles.index')->with('success', 'Artikel berhasil ditambahkan.');
->>>>>>> Stashed changes
     }
 
     /**
@@ -75,7 +83,6 @@ class ArticleController extends Controller
      */
     public function show($id)
     {
-        // Menampilkan artikel berdasarkan ID
         $article = Article::findOrFail($id);
         return view('articles.show', compact('article'));
     }
@@ -85,7 +92,6 @@ class ArticleController extends Controller
      */
     public function edit(Article $article)
     {
-        // Menampilkan form untuk mengedit artikel
         return view('articles.edit', compact('article'));
     }
 
@@ -94,54 +100,42 @@ class ArticleController extends Controller
      */
     public function update(Request $request, Article $article)
     {
-        // Validasi dan update artikel
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
-            'category' => 'required|string|max:255',
-            'image_url' => 'required|url',
+            'category' => 'required|in:Musim Kemarau,Musim Hujan',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-<<<<<<< Updated upstream
-        $article->update($request->all());
-        return redirect()->route('articles.index')->with('success', 'Article updated successfully.');
-=======
-        // Check if there's a new image file uploaded
         if ($request->hasFile('image')) {
-            // Delete the old image if it exists
             if ($article->image_url) {
                 Storage::disk('public')->delete($article->image_url);
             }
 
-            // Store the new image
             $path = $request->file('image')->store('articles', 'public');
             $article->image_url = $path;
         }
 
-        // Update the article
         $article->update([
             'title' => $request->title,
             'content' => $request->content,
             'category' => $request->category,
         ]);
 
-        // Kirimkan notifikasi ke semua pengguna setelah artikel diperbarui
-        $users = User::all(); // Ambil semua pengguna
-        foreach ($users as $user) {
-            $user->notify(new FloodRescueEduNotification("Artikel diperbarui: " . $article->title));
-        }
-
         return redirect()->route('articles.index')->with('success', 'Artikel berhasil diperbarui.');
->>>>>>> Stashed changes
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Article $article)
     {
-        // Menghapus artikel
+        if ($article->image_url) {
+            Storage::disk('public')->delete($article->image_url);
+        }
+
         $article->delete();
-        return redirect()->route('articles.index')->with('success', 'Article deleted successfully.');
+        return redirect()->route('articles.index')->with('success', 'Artikel berhasil dihapus.');
     }
 }

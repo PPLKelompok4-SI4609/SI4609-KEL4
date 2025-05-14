@@ -1,95 +1,113 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LaporanBanjirController;
+use App\Http\Controllers\admin\AdminLaporanController;
+use App\Http\Controllers\admin\AdminDashboardController;
+use App\Http\Controllers\WeatherController;
 use App\Http\Controllers\ArticleController;
-<<<<<<< Updated upstream
-use App\Http\Controllers\Admin\ArticleController as AdminArticleController;
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
-=======
 use App\Http\Controllers\CleaningController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\TwoFactorController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
-use App\Http\Controllers\FloodRescueController;
-use App\Notifications\FloodRescueEduNotification;
->>>>>>> Stashed changes
+use App\Http\Controllers\DonationController;
 
+
+// =======================
+// Halaman Awal / Umum
+// =======================
 Route::get('/', function () {
     return view('welcome');
 });
 
+// =======================
+// Halaman Welcome
+// =======================
+Route::get('/welcome', function () {
+    return view('welcome');
+})->name('welcome');
 
-Route::prefix('admin')->name('admin.')->group(function () {
-    Route::resource('articles', AdminArticleController::class);
+// =======================
+// Halaman Home
+// =======================
+Route::get('/home', function () {
+    return view('home');
+})->name('home');
+
+// =======================
+// Laporan Banjir (User)
+// =======================
+Route::prefix('laporan')->middleware(['auth', '2fa', 'role:user'])->group(function () {
+    Route::get('/', [LaporanBanjirController::class, 'create'])->name('laporan.create');
+    Route::post('/', [LaporanBanjirController::class, 'store'])->name('laporan.store');
+    Route::get('/status', [LaporanBanjirController::class, 'index'])->name('laporan.status');
 });
 
-Route::get('/articles', [ArticleController::class, 'index'])->name('articles.index');
-Route::get('/articles/create', [ArticleController::class, 'create'])->name('articles.create'); // pindah ke atas
-Route::post('/articles', [ArticleController::class, 'store'])->name('articles.store');
-Route::get('/articles/{id}', [ArticleController::class, 'show'])->name('articles.show');
-<<<<<<< Updated upstream
-=======
-Route::get('/articles/{article}/edit', [ArticleController::class, 'edit'])->name('articles.edit');
-Route::put('/articles/{article}', [ArticleController::class, 'update'])->name('articles.update');
-Route::delete('/articles/{article}', [ArticleController::class, 'destroy'])->name('articles.destroy');
+// =======================
+// Laporan Banjir (Admin)
+// =======================
+Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+    Route::get('/laporan', [AdminLaporanController::class, 'index'])->name('admin.laporan.index');
+    Route::put('/laporan/{id}/status', [AdminLaporanController::class, 'updateStatus'])->name('admin.laporan.updateStatus');
+    Route::delete('/laporan/{id}', [AdminLaporanController::class, 'destroy'])->name('admin.laporan.destroy');
+});
 
-Route::get('/pasca-banjir', [CleaningController::class, 'index'])->name('pasca-banjir.index');
+// =======================
+// Artikel
+// =======================
+Route::prefix('articles')->middleware(['auth', '2fa', 'role:user'])->group(function () {
+    Route::get('/', [ArticleController::class, 'index'])->name('articles.index');
+    Route::get('/create', [ArticleController::class, 'create'])->name('articles.create');
+    Route::post('/', [ArticleController::class, 'store'])->name('articles.store');
+    Route::get('/{id}', [ArticleController::class, 'show'])->name('articles.show');
+    Route::get('/{article}/edit', [ArticleController::class, 'edit'])->name('articles.edit');
+    Route::put('/{article}', [ArticleController::class, 'update'])->name('articles.update');
+    Route::delete('/{article}', [ArticleController::class, 'destroy'])->name('articles.destroy');
+});
 
+// =======================
+// Cuaca
+// =======================
+Route::get('/cuaca', [WeatherController::class, 'index'])->middleware(['auth', '2fa' , 'role:user'])->name('cuaca.index');
+
+// =======================
+// Pasca Banjir
+// =======================
+Route::get('/pasca', [CleaningController::class, 'index'])->middleware(['auth', '2fa' , 'role:user'])->name('pasca.index');
+
+// =======================
+// Donasi Banjir
+// =======================
+Route::get('/donasi', [DonationController::class, 'index'])->middleware(['auth', '2fa', 'role:user'])->name('donasi.index');
+Route::get('/donasi', [DonationController::class, 'index'])->name('donasi.index');
+Route::post('/donasi', [DonationController::class, 'store'])->name('donasi.store');
+// =======================
+// Autentikasi
+// =======================
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-// Registration Routes
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'register']);
 
-// Two Factor Authentication Routes
-Route::middleware(['auth'])->group(function () {
-    Route::get('/two-factor', [TwoFactorController::class, 'show'])->name('two-factor.show');
-    Route::post('/two-factor', [TwoFactorController::class, 'store'])->name('two-factor.verify');
-    Route::post('/two-factor/resend', [TwoFactorController::class, 'resend'])->name('two-factor.resend');
+// =======================
+// Two Factor Authentication
+// =======================
+Route::middleware(['auth'])->prefix('two-factor')->group(function () {
+    Route::get('/', [TwoFactorController::class, 'show'])->name('two-factor.index');
+    Route::post('/verify', [TwoFactorController::class, 'store'])->name('two-factor.verify');
+    Route::post('/resend', [TwoFactorController::class, 'resend'])->name('two-factor.resend');
 });
 
-// Password Reset Routes
-Route::get('password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])
-    ->name('password.request');
-Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])
-    ->name('password.email');
-Route::get('password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])
-    ->name('password.reset');
-Route::post('password/reset', [ResetPasswordController::class, 'reset'])
-    ->name('password.update');
-    
-// Route untuk mengirimkan notifikasi
-Route::get('/send-notification', [FloodRescueController::class, 'sendNotification'])->name('send.notification');
-
-Route::get('/send-notification', function () {
-    // Ambil pengguna pertama dari database
-    $user = User::first(); 
-
-    // Kirimkan notifikasi ke pengguna pertama
-    $user->notify(new FloodRescueEduNotification("Test notifikasi: Kesiapsiagaan banjir!"));
-
-    // Tampilkan pesan konfirmasi
-    return "Notifikasi telah dikirim!";
-});
-
-Route::get('/send-dummy-notification', [FloodRescueController::class, 'sendDummyNotification'])->name('send.dummy.notification');
-
-
-
->>>>>>> Stashed changes
-
-
+// =======================
+// Reset Password
+// =======================
+Route::get('/password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+Route::post('/password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+Route::get('/password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+Route::post('/password/reset', [ResetPasswordController::class, 'reset'])->name('password.update');
 

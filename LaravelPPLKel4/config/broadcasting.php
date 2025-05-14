@@ -7,15 +7,15 @@ return [
     | Default Broadcaster
     |--------------------------------------------------------------------------
     |
-    | This option controls the default broadcaster that will be used by the
-    | framework when an event needs to be broadcast. You may set this to
+    | This option controls the default broadcaster that will be used by
+    | the framework when an event needs to be broadcast. You may set this to
     | any of the connections defined in the "connections" array below.
     |
     | Supported: "pusher", "ably", "redis", "log", "null"
     |
     */
 
-    'default' => env('BROADCAST_DRIVER', 'pusher'),
+    'default' => env('BROADCAST_DRIVER', 'null'),
 
     /*
     |--------------------------------------------------------------------------
@@ -32,13 +32,15 @@ return [
 
         'pusher' => [
             'driver' => 'pusher',
-            'key' => env('e1d4e43e39eb3201b971'),
-            'secret' => env('10166ceb44a1cf38a3c2'),
-            'app_id' => env('1986603'),
+            'key' => env('PUSHER_APP_KEY'),
+            'secret' => env('PUSHER_APP_SECRET'),
+            'app_id' => env('PUSHER_APP_ID'),
             'options' => [
-'               cluster' => env('ap1'), // Cluster Pusher yang digunakan
-                'encrypted' => true, // Mengaktifkan enkripsi untuk keamanan
-                'useTLS' => env('PUSHER_SCHEME', 'https') === 'https', // Penggunaan TLS berdasarkan .env
+                'host' => env('PUSHER_HOST', 'api-' . env('PUSHER_APP_CLUSTER') . '.pusher.com'),
+                'port' => env('PUSHER_PORT', 443),
+                'scheme' => env('PUSHER_SCHEME', 'https'),
+                'encrypted' => true,
+                'useTLS' => env('PUSHER_SCHEME', 'https') === 'https',
             ],
             'client_options' => [
                 // Guzzle client options: https://docs.guzzlephp.org/en/stable/request-options.html

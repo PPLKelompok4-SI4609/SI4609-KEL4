@@ -50,3 +50,46 @@
         </div>
     </div>
 </nav>
+
+<script src="https://cdn.jsdelivr.net/npm/laravel-echo@1.10.0/dist/echo.iife.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pusher-js/7.0.3/pusher.min.js"></script>
+
+<script>
+    // Menangani klik pada ikon notifikasi
+    document.getElementById('notification-icon').addEventListener('click', () => {
+        const dropdown = document.getElementById('notification-dropdown');
+        dropdown.classList.toggle('hidden');  // Toggle visibilitas dropdown
+    });
+
+    // Mendengarkan event "NewArticlePublished" menggunakan Laravel Echo
+    window.Echo.channel('articles')
+        .listen('NewArticlePublished', (event) => {
+            console.log('New article published:', event.article.title); // Debug: log artikel yang diterima
+
+            // Menampilkan jumlah notifikasi pada ikon
+            updateNotificationCount(event.articleCount);
+
+            // Menampilkan daftar notifikasi dalam dropdown
+            loadNotifications(event.notifications);
+        });
+
+    // Fungsi untuk memperbarui jumlah notifikasi
+    function updateNotificationCount(count) {
+        const notificationCount = document.getElementById('notification-count');
+        notificationCount.innerText = count;
+    }
+
+    // Fungsi untuk menampilkan daftar notifikasi dalam dropdown
+    function loadNotifications(notifications) {
+        const notificationList = document.getElementById('notification-list');
+        notificationList.innerHTML = '';  // Kosongkan list sebelum mengisi
+
+        notifications.forEach(notification => {
+            const li = document.createElement('li');
+            li.classList.add('p-2', 'hover:bg-gray-100');
+            li.innerHTML = `<a href="${notification.link}" class="text-sm text-gray-700">${notification.title}</a>`;
+            notificationList.appendChild(li);
+        });
+    }
+</script>
+
