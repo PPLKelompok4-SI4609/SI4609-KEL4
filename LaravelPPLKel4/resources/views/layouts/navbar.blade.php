@@ -26,7 +26,12 @@
                     Info Cuaca
                     </a>
                 </li>
-                <li><a href="#" class="hover:text-blue-600 transition">Peta Wilayah</a></li>
+                <li>
+                    <a href="/peta" 
+                    class="{{ Request::is('map*') ? 'text-blue-700 font-semibold' : 'text-gray-700 hover:text-blue-600' }}">
+                    Peta Wilayah
+                    </a>
+                </li>
             @endif
         </ul>
         

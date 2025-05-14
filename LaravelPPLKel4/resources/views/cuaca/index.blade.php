@@ -4,396 +4,422 @@
 
 @section('content')
 <style>
-body {
-    font-family: "Inter", sans-serif;
-    background-color: #e0f7fa; /* Light blue background */
-    color: #0d47a1; /* Dark blue text */
-    margin: 0;
-    padding: 0;
-    line-height: 1.6;
-    font-weight: 400;
-    position: relative;
-    min-height: 100vh;
-}
-/* Full viewport hero */
-#hero {
-    height: calc(100vh - 60px);
-    position: relative;
-    overflow: hidden;
-}
-#hero img.bg-image {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 0.3;
-    z-index: 0;
-}
-#hero .content {
-    position: relative;
-    z-index: 10;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 0 1rem;
-    text-align: center;
-}
-.city-card {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.city-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
-    cursor: pointer;
-}
-.btn-blue {
-    background-color: #2196f3; /* Blue */
-    color: white;
-}
-.btn-blue:hover {
-    background-color: #1976d2; /* Darker blue */
-}
-/* Search toggle button */
-#search-toggle {
-    position: absolute;
-    top: 50%;
-    right: 0;
-    transform: translate(150%, -50%);
-    background: transparent;
-    border: none;
-    color: #1e3a8a;
-    font-size: 1.25rem;
-    cursor: pointer;
-    z-index: 25;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-#search-toggle:focus {
-    outline: 2px solid #2563eb;
-    outline-offset: 2px;
-}
-/* Search form */
-#search-form {
-    display: flex;
-    gap: 0.75rem;
-}
-#search-form input[type="text"] {
-    flex-grow: 1;
-    border-radius: 9999px;
-    border: 1px solid #2563eb;
-    padding: 0.75rem 1.25rem;
-    font-size: 1rem;
-    outline-offset: 2px;
-    transition: box-shadow 0.2s ease;
-    font-weight: 600;
-    color: #0d47a1;
-    background-color: white;
-    caret-color: #2563eb;
-}
-#search-form input[type="text"]::placeholder {
-    color: #93c5fd;
-    font-weight: 500;
-}
-#search-form input[type="text"]:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px #2563eb;
-    background-color: white;
-    color: #0d47a1;
-}
-#search-form button {
-    background-color: #2563eb; /* blue-600 */
-    color: white;
-    font-weight: 600;
-    padding: 0 1.25rem;
-    border-radius: 9999px;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 1rem;
-    transition: background-color 0.2s ease;
-    border: none;
-    cursor: pointer;
-    user-select: none;
-}
-#search-form button:hover,
-#search-form button:focus {
-    background-color: #1e40af; /* blue-800 */
-    outline: none;
-}
-/* Forecast & Flood Risk spacing */
-#forecast-flood-container {
-    max-width: 1120px;
-    margin: 0 auto 3rem auto;
-    padding: 0 1rem;
-}
-/* Tabs container */
-.tabs {
-    display: flex;
-    justify-content: center;
-    gap: 1.5rem;
-    margin-bottom: 1.5rem;
-    font-weight: 600;
-    font-size: 1.125rem;
-    color: #1e40af;
-    border-bottom: 2px solid transparent;
-    cursor: pointer;
-}
-.tabs button {
-    background: none;
-    border: none;
-    padding-bottom: 0.25rem;
-    color: #64748b; /* gray-500 */
-    border-bottom: 2px solid transparent;
-    transition: color 0.2s ease, border-color 0.2s ease;
-}
-.tabs button.active {
-    color: #1e40af; /* blue-800 */
-    border-color: #1e40af;
-    cursor: default;
-}
-/* Forecast grids */
-.forecast {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1.5rem;
-}
-@media (min-width: 640px) {
+    body {
+        font-family: "Inter", sans-serif;
+        background-color: #e0f7fa; /* Light blue background */
+        color: #0d47a1; /* Dark blue text */
+        margin: 0;
+        padding: 0;
+        line-height: 1.6;
+        font-weight: 400;
+        position: relative;
+        min-height: 100vh;
+    }
+    /* Full viewport hero */
+    #hero {
+        height: 100vh;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        color: white;
+        background: var(--bg-gradient, linear-gradient(135deg, #81d4fa, #0288d1));
+        transition: background 0.5s ease;
+    }
+    #hero img.bg-image {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.3;
+        z-index: 1;
+    }
+    #hero .content {
+        position: relative;
+        z-index: 10;
+        max-width: 48rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .city-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .city-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+        cursor: pointer;
+    }
+    .btn-blue {
+        background-color: #2196f3; /* Blue */
+        color: white;
+    }
+    .btn-blue:hover {
+        background-color: #1976d2; /* Darker Blue */
+    }
+    /* Search toggle button */
+    #search-toggle {
+        position: absolute;
+        top: 50%;
+        right: 0;
+        transform: translate(150%, -50%);
+        background: transparent;
+        border: none;
+        color: #1e3a8a;
+        font-size: 1.25rem;
+        cursor: pointer;
+        z-index: 25;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    #search-toggle:focus {
+        outline: 2px solid #2563eb;
+        outline-offset: 2px;
+    }
+    /* Search form */
+    #search-form {
+        display: flex;
+        gap: 0.75rem;
+    }
+    #search-form input[type="text"] {
+        flex-grow: 1;
+        border-radius: 9999px;
+        border: 1px solid #2563eb;
+        padding: 0.75rem 1.25rem;
+        font-size: 1rem;
+        outline-offset: 2px;
+        transition: box-shadow 0.2s ease;
+        font-weight: 600;
+        color: #0d47a1;
+        background-color: white;
+        caret-color: #2563eb;
+    }
+    #search-form input[type="text"]::placeholder {
+        color: #93c5fd;
+        font-weight: 500;
+    }
+    #search-form input[type="text"]:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px #2563eb;
+        background-color: white;
+        color: #0d47a1;
+    }
+    #search-form button {
+        background-color: #2563eb;
+        color: white;
+        font-weight: 600;
+        padding: 0 1.25rem;
+        border-radius: 9999px;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 1rem;
+        transition: background-color 0.2s ease;
+        border: none;
+        cursor: pointer;
+        user-select: none;
+    }
+    #search-form button:hover,
+    #search-form button:focus {
+        background-color: #1e40af;
+        outline: none;
+    }
+    /* Forecast & Flood Risk spacing */
+    #forecast-flood-container {
+        max-width: 1120px;
+        margin: 0 auto 3rem auto;
+        padding: 0 1rem;
+    }
+    /* Tabs container */
+    .tabs {
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+        font-weight: 600;
+        font-size: 1.125rem;
+        color: #1e40af;
+        border-bottom: 2px solid transparent;
+        cursor: pointer;
+    }
+    .tabs button {
+        background: none;
+        border: none;
+        padding-bottom: 0.25rem;
+        color: #64748b;
+        border-bottom: 2px solid transparent;
+        transition: color 0.2s ease, border-color 0.2s ease;
+    }
+    .tabs button.active {
+        color: #1e40af;
+        border-color: #1e40af;
+        cursor: default;
+    }
+    /* Forecast grids */
     .forecast {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1.5rem;
     }
-}
-@media (min-width: 768px) {
-    .forecast {
-    grid-template-columns: repeat(6, minmax(0, 1fr));
+    @media (min-width: 640px) {
+        .forecast {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
     }
-}
-.forecast-day {
-    background-color: white;
-    border-radius: 1rem;
-    padding: 1rem;
-    text-align: center;
-    box-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    font-weight: 600;
-    color: #1e40af;
-    cursor: default;
-}
-.forecast-day:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
-    cursor: pointer;
-}
-.forecast-day h5 {
-    font-weight: 600;
-    font-size: 0.875rem;
-    margin-bottom: 0.25rem;
-    color: #1e40af;
-}
-.forecast-day p {
-    font-weight: 400;
-    font-size: 0.75rem;
-    color: #64748b;
-    margin-bottom: 0.25rem;
-}
-.forecast-day p.temp {
-    font-weight: 700;
-    font-size: 1.125rem;
-    color: #1e40af;
-    margin-bottom: 0.25rem;
-}
-/* Flood risk section */
-#flood-risk {
-    max-width: 480px;
-    margin: 3rem auto 0 auto;
-    padding: 1rem 1.5rem;
-    border-radius: 1rem;
-    text-align: center;
-    font-weight: 600;
-    color: #1e40af;
-    position: relative;
-    user-select: none;
-}
-#flood-risk h2 {
-    font-size: 1.25rem;
-    margin-bottom: 0.5rem;
-    color: #1e40af;
-    font-weight: 700;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 0.5rem;
-}
-#flood-risk h2 i {
-    font-size: 1.5rem;
-}
-#flood-risk p {
-    font-weight: 400;
-    font-size: 1rem;
-    margin-bottom: 0.5rem;
-    color: #334155; /* gray-700 */
-}
-#flood-risk p.important {
-    font-weight: 600;
-    font-size: 1.125rem;
-    margin-top: 1rem;
-    color: #1e40af;
-}
-/* Top Cities Section */
-section#top-cities {
-    max-width: 1120px;
-    margin: 3rem auto 3rem auto;
-    padding: 0 1rem;
-}
-section#top-cities h2 {
-    font-weight: 600;
-    font-size: 1.25rem;
-    margin-bottom: 1.5rem;
-    text-align: center;
-    color: #1e40af;
-}
-section#top-cities .grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1.5rem;
-    max-width: 900px;
-    margin: 0 auto;
-}
-@media (min-width: 640px) {
+    @media (min-width: 768px) {
+        .forecast {
+            grid-template-columns: repeat(6, minmax(0, 1fr));
+        }
+    }
+    .forecast-day {
+        background-color: white;
+        border-radius: 1rem;
+        padding: 1rem;
+        text-align: center;
+        box-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        font-weight: 600;
+        color: #1e40af;
+        cursor: default;
+    }
+    .forecast-day:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+        cursor: pointer;
+    }
+    .forecast-day h5 {
+        font-weight: 600;
+        font-size: 0.875rem;
+        margin-bottom: 0.25rem;
+        color: #1e40af;
+    }
+    .forecast-day p {
+        font-weight: 400;
+        font-size: 0.75rem;
+        color: #64748b;
+        margin-bottom: 0.25rem;
+    }
+    .forecast-day p.temp {
+        font-weight: 700;
+        font-size: 1.125rem;
+        color: #1e40af;
+        margin-bottom: 0.25rem;
+    }
+    /* Flood risk section */
+    #flood-risk {
+        max-width: 480px;
+        margin: 3rem auto 0 auto;
+        padding: 1rem 1.5rem;
+        border-radius: 1rem;
+        text-align: center;
+        font-weight: 600;
+        color: #1e40af;
+        position: relative;
+        user-select: none;
+    }
+    #flood-risk h2 {
+        font-size: 1.25rem;
+        margin-bottom: 0.5rem;
+        color: #1e40af;
+        font-weight: 700;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    #flood-risk h2 i {
+        font-size: 1.5rem;
+    }
+    #flood-risk p {
+        font-weight: 400;
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+        color: #334155;
+    }
+    #flood-risk p.important {
+        font-weight: 600;
+        font-size: 1.125rem;
+        margin-top: 1rem;
+        color: #1e40af;
+    }
+    /* Top Cities Section */
+    section#top-cities {
+        max-width: 1120px;
+        margin: 3rem auto 3rem auto;
+        padding: 0 1rem;
+    }
+    section#top-cities h2 {
+        font-weight: 600;
+        font-size: 1.25rem;
+        margin-bottom: 1.5rem;
+        text-align: center;
+        color: #1e40af;
+    }
     section#top-cities .grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1.5rem;
+        max-width: 900px;
+        margin: 0 auto;
     }
-}
-@media (min-width: 768px) {
-    section#top-cities .grid {
-    grid-template-columns: repeat(6, minmax(0, 1fr));
+    @media (min-width: 640px) {
+        section#top-cities .grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
     }
-}
-section#top-cities a.city-card {
-    background-color: white;
-    border-radius: 1rem;
-    box-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
-    padding: 1.5rem 1rem;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.75rem;
-    color: #334155;
-    font-weight: 600;
-    text-decoration: none;
-    transition: background-color 0.2s ease;
-    font-size: 1rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    min-width: 0;
-}
-section#top-cities a.city-card:hover {
-    background-color: #dbeafe; /* blue-100 */
-    cursor: pointer;
-}
-section#top-cities a.city-card img {
-    width: 56px;
-    height: 38px;
-    border-radius: 0.25rem;
-    object-fit: cover;
-    box-shadow: 0 1px 2px rgb(0 0 0 / 0.1);
-}
-/* Section separators */
-.section-separator {
-    max-width: 1120px;
-    margin: 3rem auto 3rem auto;
-    border-top: 1.5px solid #cbd5e1; /* gray-300 */
-}
-/* Search form */
-#inline-search-form {
-    max-width: 480px;
-    margin: 2rem auto 3rem auto;
-    display: flex;
-    gap: 0.75rem;
-    padding: 0 1rem;
-}
-#inline-search-form input[type="text"] {
-    flex-grow: 1;
-    border-radius: 9999px;
-    border: 1px solid #2563eb;
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    outline-offset: 2px;
-    transition: box-shadow 0.2s ease;
-    font-weight: 600;
-    color: #0d47a1;
-    background-color: white;
-    caret-color: #2563eb;
-}
-#inline-search-form input[type="text"]::placeholder {
-    color: #93c5fd;
-    font-weight: 500;
-}
-#inline-search-form input[type="text"]:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px #2563eb;
-    background-color: white;
-    color: #0d47a1;
-}
-#inline-search-form button {
-    background-color: #2563eb; /* blue-600 */
-    color: white;
-    font-weight: 600;
-    padding: 0 1rem;
-    border-radius: 9999px;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 1rem;
-    transition: background-color 0.2s ease;
-    border: none;
-    cursor: pointer;
-    user-select: none;
-}
-#inline-search-form button:hover,
-#inline-search-form button:focus {
-    background-color: #1e40af; /* blue-800 */
-    outline: none;
-}
-@media (max-width: 480px) {
+    @media (min-width: 768px) {
+        section#top-cities .grid {
+            grid-template-columns: repeat(6, minmax(0, 1fr));
+        }
+    }
+    section#top-cities a.city-card {
+        background-color: white;
+        border-radius: 1rem;
+        box-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
+        padding: 1.5rem 1rem;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.75rem;
+        color: #334155;
+        font-weight: 600;
+        text-decoration: none;
+        transition: background-color 0.2s ease;
+        font-size: 1rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        min-width: 0;
+    }
+    section#top-cities a.city-card:hover {
+        background-color: #dbeafe;
+        cursor: pointer;
+    }
+    section#top-cities a.city-card img {
+        width: 56px;
+        height: 38px;
+        border-radius: 0.25rem;
+        object-fit: cover;
+        box-shadow: 0 1px 2px rgb(0 0 0 / 0.1);
+    }
+    /* Section separators */
+    .section-separator {
+        max-width: 1120px;
+        margin: 3rem auto 3rem auto;
+        border-top: 1.5px solid #cbd5e1;
+    }
+    /* Search form */
     #inline-search-form {
-    max-width: 100%;
-    margin: 1.5rem 1rem 2rem 1rem;
+        max-width: 480px;
+        margin: 2rem auto 3rem auto;
+        display: flex;
+        gap: 0.75rem;
+        padding: 0 1rem;
     }
-}
+    #inline-search-form input[type="text"] {
+        flex-grow: 1;
+        border-radius: 9999px;
+        border: 1px solid #2563eb;
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+        outline-offset: 2px;
+        transition: box-shadow 0.2s ease;
+        font-weight: 600;
+        color: #0d47a1;
+        background-color: white;
+        caret-color: #2563eb;
+    }
+    #inline-search-form input[type="text"]::placeholder {
+        color: #93c5fd;
+        font-weight: 500;
+    }
+    #inline-search-form input[type="text"]:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px #2563eb;
+        background-color: white;
+        color: #0d47a1;
+    }
+    #inline-search-form button {
+        background-color: #2563eb;
+        color: white;
+        font-weight: 600;
+        padding: 0 1rem;
+        border-radius: 9999px;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 1rem;
+        transition: background-color 0.2s ease;
+        border: none;
+        cursor: pointer;
+        user-select: none;
+    }
+    #inline-search-form button:hover,
+    #inline-search-form button:focus {
+        background-color: #1e40af;
+        outline: none;
+    }
+    @media (max-width: 480px) {
+        #inline-search-form {
+            max-width: 100%;
+            margin: 1.5rem 1rem 2rem 1rem;
+        }
+    }
 </style>
 
 <main>
-    <!-- Hero Section: Current Weather Fullscreen -->
     @php
     $condition = strtolower($currentWeatherData['weather'][0]['main'] ?? '');
     $gradients = [
-    'clear' => 'linear-gradient(135deg, #81d4fa, #0288d1)',
-    'clouds' => 'linear-gradient(135deg, #b0bec5, #546e7a)',
-    'rain' => 'linear-gradient(135deg, #4fc3f7, #0288d1)',
-    'drizzle' => 'linear-gradient(135deg, #80deea, #26c6da)',
-    'thunderstorm' => 'linear-gradient(135deg, #4db6ac, #00796b)',
-    'snow' => 'linear-gradient(135deg, #e1f5fe, #b3e5fc)',
-    'mist' => 'linear-gradient(135deg, #cfd8dc, #90a4ae)',
-    'fog' => 'linear-gradient(135deg, #cfd8dc, #90a4ae)',
+        'clear' => 'linear-gradient(135deg, #81d4fa, #0288d1)',
+        'clouds' => 'linear-gradient(135deg, #b0bec5, #546e7a)',
+        'rain' => 'linear-gradient(135deg, #4fc3f7, #0288d1)',
+        'drizzle' => 'linear-gradient(135deg, #80deea, #26c6da)',
+        'thunderstorm' => 'linear-gradient(135deg, #4db6ac, #00796b)',
+        'snow' => 'linear-gradient(135deg, #e1f5fe, #b3e5fc)',
+        'mist' => 'linear-gradient(135deg, #cfd8dc, #90a4ae)',
+        'fog' => 'linear-gradient(135deg, #cfd8dc, #90a4ae)',
     ];
     $bgGradient = $gradients[$condition] ?? $gradients['clear'];
+
+    // Determine rainfall amount for flood risk intensity
+    $rainfallAmount = 0;
+    if (isset($currentWeatherData['rain']['1h'])) {
+        $rainfallAmount = $currentWeatherData['rain']['1h'];
+    } elseif (isset($currentWeatherData['rain']['3h'])) {
+        $rainfallAmount = $currentWeatherData['rain']['3h'];
+    }
+    // Determine rain intensity
+    if ($rainfallAmount > 20) {
+        $rainIntensity = 'Very Heavy';
+    } elseif ($rainfallAmount > 10) {
+        $rainIntensity = 'Heavy';
+    } elseif ($rainfallAmount > 5) {
+        $rainIntensity = 'Moderate';
+    } elseif ($rainfallAmount >= 1) {
+        $rainIntensity = 'Light';
+    } else {
+        $rainIntensity = 'No Rain';
+    }
     @endphp
 
+    <!-- Hero Section: Current Weather Status -->
     @if($currentWeatherData)
-    <section id="hero" style="background: {{ $bgGradient }};">
+    <section id="hero" style="--bg-gradient: {{ $bgGradient }};">
         <img
             alt="Background sky with aurora borealis and pink clouds"
             class="bg-image"
             height="200"
             src="https://storage.googleapis.com/a1aa/image/33f9b79f-721b-46ea-1702-8b723e84f5b2.jpg"
             width="1440"
+            loading="eager"
         />
         <div class="content text-white max-w-4xl mx-auto">
             <h1 class="font-extrabold text-5xl sm:text-7xl mb-4 drop-shadow-lg" style="font-weight:700;">
@@ -434,7 +460,7 @@ section#top-cities a.city-card img {
                 <div class="flex flex-col items-center">
                     <i aria-hidden="true" class="fas fa-cloud-rain text-xl mb-1"></i>
                     <span>Rain</span>
-                    <span>{{ $currentWeatherData['rain']['1h'] ?? ($currentWeatherData['rain']['3h'] ?? 0) }} mm</span>
+                    <span>{{ $rainfallAmount }} mm</span>
                 </div>
                 <div class="flex flex-col items-center">
                     <i aria-hidden="true" class="fas fa-temperature-high text-xl mb-1"></i>
@@ -449,7 +475,7 @@ section#top-cities a.city-card img {
     <!-- Search Form -->
     <form
         id="inline-search-form"
-        action="/cuaca/"
+        action="/cuaca"
         method="GET"
         role="search"
         aria-label="Search for a city"
@@ -561,13 +587,6 @@ section#top-cities a.city-card img {
                 <section aria-label="Flood Risk Prediction" id="flood-risk" role="region" class="@if($floodRisk === 'High') high @elseif($floodRisk === 'Medium') medium @else low @endif">
                     <h2>
                         Flood Risk Prediction
-                        @if($floodRisk === 'High')
-                            <i class="fas fa-exclamation-triangle text-red-600 ml-2" aria-hidden="true"></i>
-                        @elseif($floodRisk === 'Medium')
-                            <i class="fas fa-exclamation-circle text-orange-600 ml-2" aria-hidden="true"></i>
-                        @else
-                            <i class="fas fa-check-circle text-green-600 ml-2" aria-hidden="true"></i>
-                        @endif
                     </h2>
                     <p>
                         Flood Risk in <strong>{{ $city }}</strong>: <span style="font-weight:700; color:#22c55e;">{{ $floodRisk }}</span>
@@ -575,6 +594,20 @@ section#top-cities a.city-card img {
                     <p>
                         Rainfall Level:
                         {{ $floodRisk === "High" ? "≥ 100mm" : ($floodRisk === "Medium" ? "50-99mm" : "< 50mm") }}
+                    </p>
+                    <p>
+                        Rain Intensity:
+                        @if($rainfallAmount > 20)
+                            Very Heavy ( > 20 mm )
+                        @elseif($rainfallAmount > 10)
+                            Heavy ( 10 – 20 mm )
+                        @elseif($rainfallAmount > 5)
+                            Moderate ( 5 – 10 mm )
+                        @elseif($rainfallAmount >= 1)
+                            Light ( 1 – 5 mm )
+                        @else
+                            No Rain
+                        @endif
                     </p>
                     @if($floodRisk === "High")
                         <p class="important text-red-700">
@@ -657,70 +690,72 @@ section#top-cities a.city-card img {
 </main>
 
 <script>
-// Toggle search box
-const searchToggle = document.getElementById("search-toggle");
-const searchBoxContainer = document.getElementById("search-box-container");
+    // Toggle search box
+    const searchToggle = document.getElementById("search-toggle");
+    const searchBoxContainer = document.getElementById("search-box-container");
 
-function toggleSearchBox() {
-    const isVisible = !searchBoxContainer.hasAttribute("hidden");
-    if (isVisible) {
-    searchBoxContainer.setAttribute("hidden", "");
-    searchToggle.setAttribute("aria-expanded", "false");
-    } else {
-    searchBoxContainer.removeAttribute("hidden");
-    searchToggle.setAttribute("aria-expanded", "true");
+    function toggleSearchBox() {
+        const isVisible = !searchBoxContainer.hasAttribute("hidden");
+        if (isVisible) {
+            searchBoxContainer.setAttribute("hidden", "");
+            searchToggle.setAttribute("aria-expanded", "false");
+        } else {
+            searchBoxContainer.removeAttribute("hidden");
+            searchToggle.setAttribute("aria-expanded", "true");
+        }
     }
-}
 
-searchToggle.addEventListener("click", toggleSearchBox);
-searchToggle.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" || e.key === " ") {
-    e.preventDefault();
-    toggleSearchBox();
-    }
-});
+    if (searchToggle && searchBoxContainer) {
+        searchToggle.addEventListener("click", toggleSearchBox);
+        searchToggle.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                toggleSearchBox();
+            }
+        });
 
-document.addEventListener("click", (e) => {
-    if (
-    !searchBoxContainer.contains(e.target) &&
-    !searchToggle.contains(e.target)
-    ) {
-    if (!searchBoxContainer.hasAttribute("hidden")) {
-        searchBoxContainer.setAttribute("hidden", "");
-        searchToggle.setAttribute("aria-expanded", "false");
+        document.addEventListener("click", (e) => {
+            if (
+                !searchBoxContainer.contains(e.target) &&
+                !searchToggle.contains(e.target)
+            ) {
+                if (!searchBoxContainer.hasAttribute("hidden")) {
+                    searchBoxContainer.setAttribute("hidden", "");
+                    searchToggle.setAttribute("aria-expanded", "false");
+                }
+            }
+        });
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape" && !searchBoxContainer.hasAttribute("hidden")) {
+                searchBoxContainer.setAttribute("hidden", "");
+                searchToggle.setAttribute("aria-expanded", "false");
+                searchToggle.focus();
+            }
+        });
     }
-    }
-});
-document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && !searchBoxContainer.hasAttribute("hidden")) {
-    searchBoxContainer.setAttribute("hidden", "");
-    searchToggle.setAttribute("aria-expanded", "false");
-    searchToggle.focus();
-    }
-});
 
-// Forecast tabs switching
-function switchTab(tab) {
-    document.querySelectorAll(".tab-button").forEach((btn) => {
-    btn.classList.remove("active");
-    btn.setAttribute("aria-selected", "false");
-    btn.setAttribute("tabindex", "-1");
-    });
-    document.querySelectorAll(".forecast-container").forEach((f) => {
-    if (tab === "daily") {
-        document.getElementById("daily").classList.remove("hidden");
-        document.getElementById("weekly").classList.add("hidden");
-    } else {
-        document.getElementById("weekly").classList.remove("hidden");
-        document.getElementById("daily").classList.add("hidden");
+    // Forecast tabs switching
+    function switchTab(tab) {
+        document.querySelectorAll(".tab-button").forEach((btn) => {
+            btn.classList.remove("active");
+            btn.setAttribute("aria-selected", "false");
+            btn.setAttribute("tabindex", "-1");
+        });
+        document.querySelectorAll(".forecast-container").forEach((f) => {
+            if (tab === "daily") {
+                document.getElementById("daily").classList.remove("hidden");
+                document.getElementById("weekly").classList.add("hidden");
+            } else {
+                document.getElementById("weekly").classList.remove("hidden");
+                document.getElementById("daily").classList.add("hidden");
+            }
+        });
+        const activeBtn = tab === "daily" ? "btn-daily" : "btn-weekly";
+        const btn = document.getElementById(activeBtn);
+        btn.classList.add("active");
+        btn.setAttribute("aria-selected", "true");
+        btn.setAttribute("tabindex", "0");
+        btn.focus();
     }
-    });
-    const activeBtn = tab === "daily" ? "btn-daily" : "btn-weekly";
-    const btn = document.getElementById(activeBtn);
-    btn.classList.add("active");
-    btn.setAttribute("aria-selected", "true");
-    btn.setAttribute("tabindex", "0");
-    btn.focus();
-}
 </script>
 @endsection
