@@ -37,7 +37,7 @@ Route::get('/home', function () {
 // =======================
 // Laporan Banjir (User)
 // =======================
-Route::prefix('laporan')->middleware(['auth', '2fa', 'role:user'])->group(function () {
+Route::prefix('laporan')->middleware(['auth', 'role:user', '2fa'])->group(function () {
     Route::get('/', [LaporanBanjirController::class, 'create'])->name('laporan.create');
     Route::post('/', [LaporanBanjirController::class, 'store'])->name('laporan.store');
     Route::get('/status', [LaporanBanjirController::class, 'index'])->name('laporan.status');
@@ -56,7 +56,7 @@ Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
 // =======================
 // Artikel
 // =======================
-Route::prefix('articles')->middleware(['auth', '2fa', 'role:user'])->group(function () {
+Route::prefix('articles')->middleware(['auth', 'role:user', '2fa'])->group(function () {
     Route::get('/', [ArticleController::class, 'index'])->name('articles.index');
     Route::get('/create', [ArticleController::class, 'create'])->name('articles.create');
     Route::post('/', [ArticleController::class, 'store'])->name('articles.store');
@@ -69,12 +69,12 @@ Route::prefix('articles')->middleware(['auth', '2fa', 'role:user'])->group(funct
 // =======================
 // Cuaca
 // =======================
-Route::get('/cuaca', [WeatherController::class, 'index'])->middleware(['auth', '2fa' , 'role:user'])->name('cuaca.index');
+Route::get('/cuaca', [WeatherController::class, 'index'])->middleware(['auth', 'role:user', '2fa'])->name('cuaca.index');
 
 // =======================
 // Pasca Banjir
 // =======================
-Route::get('/pasca', [CleaningController::class, 'index'])->middleware(['auth', '2fa' , 'role:user'])->name('pasca.index');
+Route::get('/pasca', [CleaningController::class, 'index'])->middleware(['auth', 'role:user', '2fa'])->name('pasca.index');
 
 // =======================
 // Autentikasi

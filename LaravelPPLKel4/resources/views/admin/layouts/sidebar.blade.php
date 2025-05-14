@@ -34,13 +34,25 @@
         </a>
         <a href="#" 
            class="block px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition">
+            Artikel
+        </a>
+        <a href="#" 
+           class="block px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition">
+            Pengguna
+        </a>
+        <a href="#" 
+           class="block px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition">
+            Layanan Pasca Banjir
+        </a>
+        <a href="#" 
+           class="block px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition">
             Pengaturan
         </a>
     </nav>
     <div class="p-4 border-t border-gray-200">
         <form method="POST" action="{{ route('logout') }}">
             @csrf
-            <button type="submit" class="w-full text-left px-4 py-2 rounded-lg text-gray-700 hover:bg-red-100 hover:text-red-600 transition">
+            <button type="submit" class="w-full text-center px-4 py-2 rounded-lg text-gray-700 hover:bg-red-100 hover:text-red-600 transition">
                 Logout
             </button>
         </form>
