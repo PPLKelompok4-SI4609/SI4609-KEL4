@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'FloodRescue | Donasi & Bantuan Sosial')
+
 @section('content')
 <!-- Header Section -->
 <header class="bg-[#2f7f6f]">
@@ -9,7 +11,8 @@
             <h1 class="text-4xl sm:text-5xl font-serif font-bold leading-tight mb-6">Helping Each Other Can Make the World Better</h1>
             <p class="text-sm sm:text-base max-w-xl mx-auto mb-10">We are here to help people who need it most. Your donation can change lives and bring hope to many.</p>
             <div class="flex justify-center space-x-4">
-                <button class="border border-white px-8 py-3 rounded text-white font-semibold text-sm hover:bg-white hover:text-[#2f7f6f] transition">Donate</button>
+                <!-- The donate button is initially disabled, will be enabled after submission -->
+                <button id="donateButton" class="border border-white px-8 py-3 rounded text-white font-semibold text-sm hover:bg-white hover:text-[#2f7f6f] transition" disabled>Donate</button>
             </div>
         </div>
     </div>
@@ -65,72 +68,60 @@
         </div>
     </section>
 
-<!-- Display Donation and Tracking Information -->
-@if (session('donation'))
-    <div class="mt-5 bg-gray-100 p-8 rounded-md">
-        <h4 class="font-bold text-lg">Donasi Anda</h4>
-        <p>Jumlah Donasi: Rp. {{ session('donation')->amount }}</p>
-        <p>Status: {{ session('donation')->status }}</p>
+    <!-- Display Donation and Tracking Information -->
+    @if (session('donation'))
+        <div class="mt-5 bg-gray-100 p-8 rounded-md">
+            <h4 class="font-bold text-lg">Donasi Anda</h4>
+            <p>Jumlah Donasi: Rp. {{ session('donation')->amount }}</p>
+            <p>Status: {{ session('donation')->status }}</p>
 
-        <h4 class="font-bold text-lg mt-4">Tracking Donasi</h4>
-        @if(session('tracking') && session('tracking')->tracking_info)
-            <p>{{ session('tracking')->tracking_info }} - {{ session('tracking')->created_at }}</p>
-        @else
-            <p>No tracking information available yet.</p>
-        @endif
+            <h4 class="font-bold text-lg mt-4">Tracking Donasi</h4>
+            @if(session('tracking') && session('tracking')->tracking_info)
+                <p>{{ session('tracking')->tracking_info }} - {{ session('tracking')->created_at }}</p>
+            @else
+                <p>No tracking information available yet.</p>
+            @endif
+        </div>
+    @endif
+
+<!-- Order Success Pop-up -->
+@if(session('order_success'))
+    <div id="orderSuccessPopup" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white p-6 rounded-md">
+            <h3 class="font-bold text-xl text-center">{{ session('order_success') }}</h3>
+            <!-- Close Button -->
+            <button id="closePopup" class="mt-4 w-full bg-[#2f7f6f] text-white font-semibold py-2 rounded">Close</button>
+        </div>
     </div>
 @endif
 
 
- <!-- Section: Let's Come Together -->
-   <section class="flex flex-col lg:flex-row gap-10 mb-20">
-    <div class="lg:w-1/3">
-     <h3 class="text-lg font-serif font-bold mb-4">
-      Let's Come Together To Make A Difference
-     </h3>
-     <p class="text-xs text-gray-600 mb-6">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam scelerisque aliquam odio et faucibus. Nulla rhoncus feugiat eros quis consectetur.
-     </p>
-     <div class="mb-4">
-      <label class="block text-xs font-semibold mb-1 text-gray-700" for="cause">
-       Pick Cause
-      </label>
-      <select class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2f7f6f]" id="cause">
-       <option>
-        Education
-       </option>
-       <option>
-        Health
-       </option>
-       <option>
-        Environment
-       </option>
-       <option>
-        Animal Welfare
-       </option>
-      </select>
-     </div>
-     <div class="mb-4">
-      <label class="block text-xs font-semibold mb-1 text-gray-700" for="donation">
-       Donation
-      </label>
-      <input class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2f7f6f]" id="donation" type="text" value="$100"/>
-     </div>
-     <div class="mb-4">
-      <label class="block text-xs font-semibold mb-1 text-gray-700" for="email2">
-       Email Address
-      </label>
-      <input class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2f7f6f]" id="email2" placeholder="Enter Your Email" type="email"/>
-     </div>
-    </div>
-    <div class="lg:w-1/3 bg-[#d1e1db] rounded-md h-64">
-    </div>
-    <div class="lg:w-1/3 bg-white border border-[#2f7f6f] rounded-md p-6 text-xs text-[#2f7f6f] font-serif leading-relaxed">
-     <p>
-      “Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam scelerisque aliquam odio et faucibus. Nulla rhoncus feugiat eros quis consectetur.”
-     </p>
-    </div>
-   </section>
+@section('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const donateButton = document.getElementById('donateButton');
+        donateButton.disabled = false; // Aktifkan tombol donate setelah form disubmit
+
+        // Periksa apakah tombol close ada sebelum menambahkan event listener
+        const closePopupButton = document.getElementById('closePopup');
+        if (closePopupButton) {
+            console.log('Tombol Close ditemukan');
+            closePopupButton.addEventListener('click', function() {
+                console.log('Tombol Close diklik');
+                const orderSuccessPopup = document.getElementById('orderSuccessPopup');
+                if (orderSuccessPopup) {
+                    orderSuccessPopup.style.display = 'none'; // Sembunyikan popup
+                }
+            });
+        } else {
+            console.log('Tombol Close tidak ditemukan');
+        }
+    });
+</script>
+@endsection
+
+
+
    <!-- Popular Cause Section -->
    <section class="mb-20">
     <h3 class="text-lg font-serif font-bold mb-8">
