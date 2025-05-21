@@ -18,6 +18,15 @@ class AdminLaporanController extends Controller
     {
         $laporan = LaporanBanjir::findOrFail($id);
         $laporan->status = $request->status;
+        
+        if ($request->status === 'Ditolak') {
+            $laporan->keterangan = $request->keterangan;
+            $laporan->save();
+
+            return redirect()->route('admin.laporan.index')->with('success', 'Status laporan berhasil diperbarui dan keterangan laporan ditolak berhasil ditambahkan!');
+        }
+
+        $laporan->keterangan = null;
         $laporan->save();
 
         return redirect()->route('admin.laporan.index')->with('success', 'Status laporan berhasil diperbarui!');

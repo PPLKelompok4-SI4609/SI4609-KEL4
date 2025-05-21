@@ -45,7 +45,8 @@ class LaporanBanjirController extends Controller
             'kontak' => $request->kontak,
             'foto' => $fotoPath,
             'status' => 'Dikirim',
-        ]);               
+            'keterangan' => null
+        ]);
 
         return redirect()->back()->with('success', 'Laporan berhasil dikirim!');
     }

@@ -60,12 +60,18 @@
                                     Mohon bersabar, pihak FloodRescue sedang menghubungi tim relawan.
                                 @elseif ($laporan->status == 'Ditolak')
                                     Maaf, laporan Anda belum sesuai dengan ketentuan kami.
+
+                                    @if ($laporan->keterangan)
+                                        <div class="mt-2 text-sm text-red-700 bg-red-100 border border-red-300 p-3 rounded">
+                                            <strong>Alasan Penolakan:</strong> {{ $laporan->keterangan }}
+                                        </div>
+                                    @endif
                                 @elseif ($laporan->status == 'Selesai')
                                     Semoga Anda dalam keadaan baik-baik saja.
                                 @endif
                             </p>
 
-                            <p class="text-sm text-black mt-2 text-justify">{{ $laporan->deskripsi }}</p>
+                            <p class="text-sm text-gray-600">Deskripsi: <span class="font-medium">{{ $laporan->deskripsi }}</span></p>
                         </div>
                         @if ($laporan->foto)
                             <div class="flex-shrink-0">

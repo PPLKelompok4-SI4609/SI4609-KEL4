@@ -66,16 +66,29 @@
                         @endif
 
                         @if (!in_array($laporan->status, ['Ditolak', 'Selesai']))
-                            <form method="POST" action="{{ route('admin.laporan.updateStatus', $laporan->id) }}" class="flex flex-col items-end gap-2">
+                            <form method="POST" action="{{ route('admin.laporan.updateStatus', $laporan->id) }}" class="flex flex-col items-end gap-2 w-full">
                                 @csrf
                                 @method('PUT')
 
-                                <select name="status" class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400">
+                                <select 
+                                    name="status" 
+                                    id="status-select-{{ $laporan->id }}"
+                                    class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    onchange="toggleKeterangan(this, {{ $laporan->id }})"
+                                >
                                     <option value="Dikirim" {{ $laporan->status == 'Dikirim' ? 'selected' : '' }}>Dikirim</option>
                                     <option value="Diproses" {{ $laporan->status == 'Diproses' ? 'selected' : '' }}>Diproses</option>
                                     <option value="Ditolak" {{ $laporan->status == 'Ditolak' ? 'selected' : '' }}>Ditolak</option>
                                     <option value="Selesai" {{ $laporan->status == 'Selesai' ? 'selected' : '' }}>Selesai</option>
                                 </select>
+
+                                <textarea 
+                                    name="keterangan"
+                                    id="keterangan-field-{{ $laporan->id }}"
+                                    placeholder="Tulis alasan penolakan..."
+                                    class="mt-2 border border-gray-300 rounded-lg px-3 py-2 text-sm w-full focus:outline-none focus:ring-2 focus:ring-red-400"
+                                    style="display: {{ $laporan->status === 'Ditolak' ? 'block' : 'none' }}"
+                                >{{ old('keterangan', $laporan->keterangan) }}</textarea>
 
                                 <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm transition">
                                     Update
@@ -130,4 +143,15 @@
         @endforeach
     </div>
 @endif
+
+<script>
+    function toggleKeterangan(select, id) {
+        const field = document.getElementById('keterangan-field-' + id);
+        if (select.value === 'Ditolak') {
+            field.style.display = 'block';
+        } else {
+            field.style.display = 'none';
+        }
+    }
+</script>
 @endsection
