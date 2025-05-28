@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LaporanBanjirController;
 use App\Http\Controllers\admin\AdminLaporanController;
 use App\Http\Controllers\admin\AdminDashboardController;
+use App\Http\Controllers\admin\AdminMapController;
 use App\Http\Controllers\WeatherController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CleaningController;
@@ -51,6 +52,7 @@ Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/laporan', [AdminLaporanController::class, 'index'])->name('admin.laporan.index');
     Route::put('/laporan/{id}/status', [AdminLaporanController::class, 'updateStatus'])->name('admin.laporan.updateStatus');
     Route::delete('/laporan/{id}', [AdminLaporanController::class, 'destroy'])->name('admin.laporan.destroy');
+    Route::get('/map', [AdminMapController::class, 'index'])->name('admin.map.index');
 });
 
 // =======================

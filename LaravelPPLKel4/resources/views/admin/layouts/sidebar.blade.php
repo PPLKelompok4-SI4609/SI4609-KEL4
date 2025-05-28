@@ -24,12 +24,14 @@
         </div>
     @endauth
     <nav class="flex-1 px-4 mt-4 space-y-2">
-        <a href="{{ route('admin.dashboard') }}" 
-           class="block px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition">
+        <a href="{{ route('admin.dashboard') }}"
+            class="block px-4 py-2 rounded-lg transition 
+                {{ Request::is('admin/dashboard') ? 'text-blue-700 font-semibold bg-blue-100' : 'text-gray-700 hover:bg-blue-100 hover:text-blue-600' }}">
             Dashboard
         </a>
         <a href="{{ route('admin.laporan.index') }}" 
-           class="block px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition">
+            class="block px-4 py-2 rounded-lg transition 
+                {{ Request::is('admin/laporan') || Request::is('admin/laporan/*') ? 'text-blue-700 font-semibold bg-blue-100' : 'text-gray-700 hover:bg-blue-100 hover:text-blue-600' }}">
             Laporan Banjir
         </a>
         <a href="#" 
@@ -43,6 +45,11 @@
         <a href="#" 
            class="block px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition">
             Layanan Pasca Banjir
+        </a>
+        <a href="{{ route('admin.map.index') }}" 
+            class="block px-4 py-2 rounded-lg transition 
+                {{ Request::is('admin/map') || Request::is('admin/map/*') ? 'text-blue-700 font-semibold bg-blue-100' : 'text-gray-700 hover:bg-blue-100 hover:text-blue-600' }}">
+            Peta Wilayah Banjir
         </a>
         <a href="#" 
            class="block px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition">
