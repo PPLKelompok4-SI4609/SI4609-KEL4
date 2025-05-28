@@ -154,17 +154,13 @@
     padding-right: 1rem;
     height: 48px;
     border-radius: 9999px;
-    border: 1px solid #D1D5DB;
-    background-color: #F9FAFB;
+    background-color: white;
     font-size: 1rem;
     font-weight: 500;
     color: #333333;
-    transition: border-color 0.2s ease;
-  }
-
-  #searchInput:focus {
-    border-color: #2563EB;
+    border: none; 
     outline: none;
+    transition: background-color 0.2s ease;
   }
 
   /* Legend */
