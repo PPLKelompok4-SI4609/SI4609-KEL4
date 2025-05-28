@@ -8,8 +8,8 @@
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-28">
         <div class="max-w-3xl text-center mx-auto text-white">
             <p class="uppercase text-xs font-semibold mb-3">Good cause for humanity</p>
-            <h1 class="text-4xl sm:text-5xl font-serif font-bold leading-tight mb-6">Helping Each Other Can Make the World Better</h1>
-            <p class="text-sm sm:text-base max-w-xl mx-auto mb-10">We are here to help people who need it most. Your donation can change lives and bring hope to many.</p>
+            <h1 class="text-4xl sm:text-5xl font-serif font-bold leading-tight mb-6">Membantu Satu Sama Lain Bisa Membuat Dunia Menjadi Lebih Baik</h1>
+            <p class="text-sm sm:text-base max-w-xl mx-auto mb-10">Kami ada di sini untuk membantu orang-orang yang paling membutuhkannya. Donasi Anda dapat mengubah hidup dan membawa harapan bagi banyak orang.</p>
             <div class="flex justify-center space-x-4">
                 <!-- The donate button is initially disabled, will be enabled after submission -->
                 <button id="donateButton" class="border border-white px-8 py-3 rounded text-white font-semibold text-sm hover:bg-white hover:text-[#2f7f6f] transition" disabled>Donate</button>
@@ -89,32 +89,38 @@
     <div id="orderSuccessPopup" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
         <div class="bg-white p-6 rounded-md">
             <h3 class="font-bold text-xl text-center">{{ session('order_success') }}</h3>
+            <p class="mt-4 text-center text-sm text-gray-700">Your order is currently being distributed. Please stay tuned for updates.</p>
             <!-- Close Button -->
             <button id="closePopup" class="mt-4 w-full bg-[#2f7f6f] text-white font-semibold py-2 rounded">Close</button>
         </div>
     </div>
 @endif
 
-
 @section('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const donateButton = document.getElementById('donateButton');
-        donateButton.disabled = false; // Aktifkan tombol donate setelah form disubmit
-
-        // Periksa apakah tombol close ada sebelum menambahkan event listener
+        // Ensure close button exists before adding event listener
         const closePopupButton = document.getElementById('closePopup');
         if (closePopupButton) {
-            console.log('Tombol Close ditemukan');
             closePopupButton.addEventListener('click', function() {
-                console.log('Tombol Close diklik');
                 const orderSuccessPopup = document.getElementById('orderSuccessPopup');
+                
                 if (orderSuccessPopup) {
-                    orderSuccessPopup.style.display = 'none'; // Sembunyikan popup
+                    // Hide the popup by adding 'hidden' class
+                    orderSuccessPopup.classList.add('hidden');
+                    
+                    // Optional: If you want to confirm action to user (via a small notification)
+                    const confirmationMessage = document.createElement('div');
+                    confirmationMessage.classList.add('fixed', 'top-0', 'left-0', 'right-0', 'bg-[#2f7f6f]', 'text-white', 'p-4', 'text-center');
+                    confirmationMessage.textContent = "Your order is being processed. Thank you for your patience!";
+                    document.body.appendChild(confirmationMessage);
+
+                    // Automatically remove confirmation message after 3 seconds
+                    setTimeout(function() {
+                        confirmationMessage.remove();
+                    }, 3000);
                 }
             });
-        } else {
-            console.log('Tombol Close tidak ditemukan');
         }
     });
 </script>
@@ -122,119 +128,164 @@
 
 
 
+
    <!-- Popular Cause Section -->
    <section class="mb-20">
     <h3 class="text-lg font-serif font-bold mb-8">
-     Find The Popular Cause And Donate Them
+     Semua donasi akan disalurkan untuk:
     </h3>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+
      <!-- Card 1 -->
      <div class="bg-white border border-gray-200 rounded-md p-4">
-      <img alt="Image representing education cause with children studying" class="mb-3 rounded" height="150" src="https://storage.googleapis.com/a1aa/image/5b1e64f6-ed7b-4ec6-cd70-769e7f2f5ffb.jpg" width="200"/>
+      <img alt="anak korban banjir" class="mb-3 rounded" height="150" src="{{ asset('images/anakbanjir.jpeg') }}" width="200"/>
       <h4 class="font-semibold text-sm mb-1">
-       Education
+       Pendidikan untuk Anak Korban Banjir
       </h4>
       <p class="text-xs text-gray-600 mb-2">
-       Ensure Every Child Has Access To Education
+       Memberikan akses pendidikan bagi anak-anak terdampak banjir, agar mereka tetap dapat belajar meskipun dalam kondisi sulit, dan memiliki masa depan yang lebih baik.
       </p>
       <div class="flex justify-between text-xs text-[#2f7f6f] font-semibold mb-3">
-       <span>
-        Raised: $12,000
-       </span>
-       <span>
-        Goal: $20,000
-       </span>
       </div>
-      <button class="bg-[#2f7f6f] text-white text-xs font-semibold px-4 py-2 rounded hover:bg-[#276a5c] transition">
-       Donate Now
-      </button>
      </div>
+
      <!-- Card 2 -->
      <div class="bg-white border border-gray-200 rounded-md p-4">
-      <img alt="Image representing children welfare with happy kids" class="mb-3 rounded" height="150" src="https://storage.googleapis.com/a1aa/image/2518b3da-c57a-4b49-f8e4-e19b787d8874.jpg" width="200"/>
+      <img alt="Anak dan Warga" class="mb-3 rounded" height="150" src="{{ asset('images/evakuasi.jpeg') }}" width="200"/>
       <h4 class="font-semibold text-sm mb-1">
-       Children Welfare
+       Bantuan untuk Warga Terdampak Banjir
       </h4>
       <p class="text-xs text-gray-600 mb-2">
-       Protect Children From Abuse And Neglect
+       Memberikan bantuan perlengkapan dasar untuk anak-anak dan keluarga yang terkena dampak banjir, seperti pakaian, obat-obatan, dan tempat tinggal sementara.
       </p>
       <div class="flex justify-between text-xs text-[#2f7f6f] font-semibold mb-3">
-       <span>
-        Raised: $8,500
-       </span>
-       <span>
-        Goal: $15,000
-       </span>
       </div>
-      <button class="bg-[#2f7f6f] text-white text-xs font-semibold px-4 py-2 rounded hover:bg-[#276a5c] transition">
-       Donate Now
-      </button>
      </div>
+
      <!-- Card 3 -->
      <div class="bg-white border border-gray-200 rounded-md p-4">
-      <img alt="Image representing animal welfare with a dog and cat" class="mb-3 rounded" height="150" src="https://storage.googleapis.com/a1aa/image/1e386dd6-f9e2-41dc-0dbc-8febc80a1a76.jpg" width="200"/>
+      <img alt="hewan terdampak" class="mb-3 rounded" height="150" src="{{ asset('images/kucing.webp') }}" width="200"/>
       <h4 class="font-semibold text-sm mb-1">
-       Animal Welfare
+       Bantuan untuk Hewan Terdampak Banjir
       </h4>
       <p class="text-xs text-gray-600 mb-2">
-       Care For Stray And Abandoned Animals
+       Merawat hewan terlantar akibat banjir dengan memberikan makanan, tempat berlindung, dan perawatan medis yang dibutuhkan.
       </p>
       <div class="flex justify-between text-xs text-[#2f7f6f] font-semibold mb-3">
-       <span>
-        Raised: $5,000
-       </span>
-       <span>
-        Goal: $10,000
-       </span>
       </div>
-      <button class="bg-[#2f7f6f] text-white text-xs font-semibold px-4 py-2 rounded hover:bg-[#276a5c] transition">
-       Donate Now
-      </button>
      </div>
+     
      <!-- Card 4 -->
      <div class="bg-white border border-gray-200 rounded-md p-4">
-      <img alt="Image representing food help with food supplies" class="mb-3 rounded" height="150" src="https://storage.googleapis.com/a1aa/image/40fcd056-7542-4e11-9da0-a300deb23240.jpg" width="200"/>
+      <img alt="pengungsi" class="mb-3 rounded" height="150" src="{{ asset('images/pengungsi.jpeg') }}" width="200"/>
       <h4 class="font-semibold text-sm mb-1">
-       Help Food
+       Menyediakan Makanan untuk Korban Banjir
       </h4>
       <p class="text-xs text-gray-600 mb-2">
-       Provide Food To The Hungry And Homeless
+       Memberikan makanan bergizi bagi korban banjir yang kehilangan tempat tinggal untuk menjaga kesehatan dan daya tahan tubuh mereka.
       </p>
       <div class="flex justify-between text-xs text-[#2f7f6f] font-semibold mb-3">
-       <span>
-        Raised: $7,000
-       </span>
-       <span>
-        Goal: $12,000
-       </span>
       </div>
-      <button class="bg-[#2f7f6f] text-white text-xs font-semibold px-4 py-2 rounded hover:bg-[#276a5c] transition">
-       Donate Now
-      </button>
      </div>
     </div>
    </section>
-   <!-- Testimonials -->
-   <section class="bg-[#2f2f38] text-white py-16 px-4 sm:px-6 lg:px-8 text-center">
-    <h3 class="text-lg font-serif font-semibold mb-8">
-     What People Say
-    </h3>
-    <div class="flex items-center justify-center space-x-12 mb-6">
-     <button aria-label="Previous testimonial" class="text-white text-2xl hover:text-gray-400 transition">
-      <i class="fas fa-chevron-left">
-      </i>
-     </button>
-     <div class="w-24 h-24 rounded-full bg-gray-400 mx-auto">
-     </div>
-     <button aria-label="Next testimonial" class="text-white text-2xl hover:text-gray-400 transition">
-      <i class="fas fa-chevron-right">
-      </i>
-     </button>
+<!-- Testimonials -->
+<section class="bg-[#2f2f38] text-white py-16 px-4 sm:px-6 lg:px-8 text-center">
+  <h3 class="text-lg font-serif font-semibold mb-8">
+    What People Say
+  </h3>
+  <div class="flex items-center justify-center space-x-12 mb-6">
+    <button aria-label="Previous testimonial" class="text-white text-2xl hover:text-gray-400 transition" id="prevBtn">
+      <i class="fas fa-chevron-left"></i>
+    </button>
+    <div id="testimonialImage" class="w-24 h-24 rounded-full bg-gray-400 mx-auto">
+      <!-- Testimonial Image will go here -->
     </div>
-    <p class="text-xs max-w-3xl mx-auto leading-relaxed px-4 sm:px-0">
-     Sam Choi: Dedicated volunteer at various Donate Lifeline Hub. Co-Founder: Life Heroes Speak, which Won’t Die. Shawn: California native. Runs a non-profit. Helping save lives. Believes in the power of community. Proud Fundraiser. Chris: Donor. Tech Geek. Caring &amp; Respect. Owner: “Better Things” Downtown. Strongly Supports Government’s Initiatives. Compassionate Donator.
-    </p>
-   </section>
+    <button aria-label="Next testimonial" class="text-white text-2xl hover:text-gray-400 transition" id="nextBtn">
+      <i class="fas fa-chevron-right"></i>
+    </button>
+  </div>
+  <p class="text-xs max-w-3xl mx-auto leading-relaxed px-4 sm:px-0">
+    <span id="testimonialText">
+      <!-- Testimonial Text will go here -->
+    </span>
+  </p>
+</section>
+
+<script>
+// Testimonial content array with image paths relative to public/images
+const testimonials = [
+  {
+    img: 'Rio.jpg',
+    name: 'Rio Ramadhani',
+    text: 'Saya merasa bangga bisa berpartisipasi dalam perubahan nyata. Setiap donasi yang saya berikan selalu membawa dampak positif bagi mereka yang membutuhkan.'
+  },
+  {
+    img: 'yodha.jpeg',
+    name: 'Wendy Shakur',
+    text: 'Memberikan donasi membuat saya merasa lebih dekat dengan mereka yang membutuhkan. Melihat senyum mereka adalah hadiah terbaik bagi saya.'
+  },
+  {
+    img: 'abid.png',
+    name: 'Abid Jordy',
+    text: 'Saya tidak hanya memberikan uang, tetapi juga harapan. Saya percaya bahwa kebaikan itu akan kembali, dan itu memberi kebahagiaan bagi saya.'
+  },
+  {
+    img: 'kirana.jpg',
+    name: 'Kirana Adira',
+    text: 'Menjadi bagian dari perubahan ini adalah pengalaman yang sangat berarti. Melihat bagaimana bantuan saya membuat hidup seseorang lebih baik sangat memuaskan.'
+  },
+  {
+    img: 'Suzanaya.jpg',
+    name: 'Suzanaya Putri',
+    text: 'Dengan berkontribusi, saya tahu saya telah membuat perbedaan. Mungkin sedikit, tapi setiap langkah kecil itu penting untuk mereka.'
+  },
+  {
+    img: 'diva.jpg',
+    name: 'Ladiva Zahra',
+    text: 'Donasi saya mungkin kecil, tapi saya tahu itu membantu. Semoga ini bisa memberi mereka kesempatan baru dalam hidup, sama seperti yang saya harapkan untuk diri saya.'
+  }
+];
+
+let currentIndex = 0;
+
+const testimonialTextElement = document.getElementById('testimonialText');
+const testimonialImageElement = document.getElementById('testimonialImage');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+
+function updateTestimonial() {
+  const imagePath = `/images/${testimonials[currentIndex].img}`;
+  console.log('Image Path:', imagePath); // Check the path in the console
+  testimonialTextElement.textContent = testimonials[currentIndex].text;
+  testimonialImageElement.style.backgroundImage = `url('${imagePath}')`;
+  testimonialImageElement.style.backgroundSize = 'cover';        // Ensure image covers the div
+  testimonialImageElement.style.backgroundPosition = 'center';  // Center the image inside the div
+  testimonialImageElement.style.backgroundRepeat = 'no-repeat'; // Prevent image repetition
+}
+
+
+// Function to go to the previous testimonial
+function goToPrevious() {
+  currentIndex = (currentIndex - 1 + testimonials.length) % testimonials.length;
+  updateTestimonial();
+}
+
+// Function to go to the next testimonial
+function goToNext() {
+  currentIndex = (currentIndex + 1) % testimonials.length;
+  updateTestimonial();
+}
+
+// Event listeners for the buttons
+prevBtn.addEventListener('click', goToPrevious);
+nextBtn.addEventListener('click', goToNext);
+
+// Initialize with the first testimonial
+updateTestimonial();
+</script>
+
+
    <!-- Stats and Partners -->
    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
     <h3 class="text-lg font-serif font-semibold mb-12">
@@ -286,13 +337,6 @@
 
 <!-- Footer Section -->
 <footer class="bg-[#2f7f6f] text-white py-12 text-center">
-    <p>&copy; 2025 FloodRescue. All rights reserved.</p>
-    <div class="flex justify-center space-x-6">
-        <a href="#" class="text-white">Facebook</a>
-        <a href="#" class="text-white">Twitter</a>
-        <a href="#" class="text-white">Instagram</a>
-        <a href="#" class="text-white">LinkedIn</a>
-    </div>
 </footer>
 
 @endsection

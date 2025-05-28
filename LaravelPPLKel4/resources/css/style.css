@@ -1,0 +1,11 @@
+#orderSuccessPopup {
+    z-index: 9999; /* Pastikan popup berada di atas */
+}
+
+#testimonialImage {
+  background-size: cover;       /* Makes sure the image covers the entire div */
+  background-position: center;  /* Centers the image inside the div */
+  background-repeat: no-repeat; /* Prevents the image from repeating */
+  width: 100%;                  /* Ensure the div takes up the full width */
+  height: 100%;                 /* Ensure the div takes up the full height */
+}

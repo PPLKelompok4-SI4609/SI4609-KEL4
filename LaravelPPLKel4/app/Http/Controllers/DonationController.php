@@ -84,7 +84,12 @@ class DonationController extends Controller
                 'order_type' => $request->order_type,
                 'status' => 'requested',
             ]);
+
+            // Show a pop-up message after submitting the order
+            session()->flash('order_success', 'Pesanan Anda akan segera didistribusikan.');
+            return redirect()->route('donasi.index');
         }
+
 
         // Return view with donation and tracking info
         return redirect()->route('donasi.index')
