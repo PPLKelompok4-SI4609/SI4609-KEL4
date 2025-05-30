@@ -20,6 +20,7 @@ return new class extends Migration
             $table->decimal('service_fee', 8, 2);
             $table->decimal('tax', 8, 2);
             $table->decimal('total', 8, 2);
+            $table->integer('estimated_duration')->comment('Estimated duration in hours');
             $table->timestamps();
         });
     }

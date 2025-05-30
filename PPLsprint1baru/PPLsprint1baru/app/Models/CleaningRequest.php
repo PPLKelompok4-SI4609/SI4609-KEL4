@@ -16,6 +16,7 @@ class CleaningRequest extends Model
         'subtotal',
         'service_fee',
         'tax',
-        'total'
+        'total',
+        'estimated_duration'
     ];
 }

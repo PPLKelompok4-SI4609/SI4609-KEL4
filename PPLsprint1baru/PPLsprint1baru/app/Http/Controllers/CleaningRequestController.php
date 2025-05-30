@@ -7,30 +7,31 @@ use Illuminate\Http\Request;
 
 class CleaningRequestController extends Controller
 {
-    /**
-     * Service pricing constants
-     */
+    
     private const PRICE_PER_SQM = [
-        'home_cleaning' => 10000,     // Rp10.000 per m²
-        'office_cleaning' => 12000,   // Rp12.000 per m²
-        'furniture_cleaning' => 14000 // Rp14.000 per m²
+        'home_cleaning' => 10000,     
+        'office_cleaning' => 12000,   
+        'furniture_cleaning' => 14000 
     ];
 
-    private const SERVICE_FEE = 8000; // Rp8.000
-    private const TAX_RATE = 0.05;    // 5%
+   
+    private const CLEANING_RATE_SQM_PER_HOUR = [
+        'home_cleaning' => 20,     
+        'office_cleaning' => 15,   
+        'furniture_cleaning' => 10 
+    ];
 
-    /**
-     * Service type mapping
-     */
+    private const SERVICE_FEE = 8000; 
+    private const TAX_RATE = 0.05;    
+
+    
     private const SERVICE_TYPES = [
-        'home_cleaning' => 'Home Cleaning',
-        'office_cleaning' => 'Office Cleaning',
-        'furniture_cleaning' => 'Furniture Cleaning'
+        'home_cleaning' => 'Pembersihan Rumah',
+        'office_cleaning' => 'Pembersihan Kantor',
+        'furniture_cleaning' => 'Pembersihan Furnitur'
     ];
 
-    /**
-     * Show the cleaning request creation form
-     */
+    
     public function create()
     {
         return view('cleaning-request.create', [
@@ -38,9 +39,7 @@ class CleaningRequestController extends Controller
         ]);
     }
 
-    /**
-     * Show the cleaning request form with pre-selected service
-     */
+    
     public function createWithService($service_type)
     {
         return view('cleaning-request.create', [
@@ -49,9 +48,7 @@ class CleaningRequestController extends Controller
         ]);
     }
 
-    /**
-     * Store a new cleaning request
-     */
+    
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -59,29 +56,30 @@ class CleaningRequestController extends Controller
             'full_address' => 'required|string|max:255',
             'contact_number' => 'required|string|max:20',
             'service_type' => 'required|in:' . implode(',', array_keys(self::SERVICE_TYPES)),
-            'scheduled_datetime' => 'required|date',
             'payment_method' => 'required|string|max:255',
             'room_length' => 'required|numeric|min:0',
-            'room_width' => 'required|numeric|min:0'
+            'room_width' => 'required|numeric|min:0',
+            'subtotal' => 'required|numeric|min:0',
+            'service_fee' => 'required|numeric|min:0',
+            'tax' => 'required|numeric|min:0',
+            'total' => 'required|numeric|min:0',
+            'estimated_duration' => 'required|integer|min:1',
+            'scheduled_datetime' => 'required|date'
         ]);
 
-        $prices = $this->calculatePrices(
-            $validated['room_length'],
-            $validated['room_width'],
-            $validated['service_type']
-        );
+        $order = CleaningRequest::create($validated);
 
-        $validated = array_merge($validated, $prices);
-
-        CleaningRequest::create($validated);
-
-        return redirect()->route('home')
-            ->with('success', 'Cleaning request submitted successfully!');
+        return redirect()->route('cleaning-request.confirmation', $order)
+            ->with('success', 'Order placed successfully!');
     }
 
-    /**
-     * Calculate prices for the cleaning service
-     */
+    
+    public function confirmation(CleaningRequest $order)
+    {
+        return view('cleaning-request.confirmation', compact('order'));
+    }
+
+    
     private function calculatePrices(float $length, float $width, string $serviceType): array
     {
         $area = $length * $width;
@@ -89,17 +87,20 @@ class CleaningRequestController extends Controller
         $serviceFee = self::SERVICE_FEE;
         $tax = ($basePrice + $serviceFee) * self::TAX_RATE;
 
+        
+        $estimatedHours = ceil($area / self::CLEANING_RATE_SQM_PER_HOUR[$serviceType]);
+
         return [
+            'area' => $area,
             'subtotal' => $basePrice,
             'service_fee' => $serviceFee,
             'tax' => $tax,
-            'total' => $basePrice + $serviceFee + $tax
+            'total' => $basePrice + $serviceFee + $tax,
+            'estimated_duration' => $estimatedHours
         ];
     }
 
-    /**
-     * API endpoint for price calculation
-     */
+    
     public function calculatePrice(Request $request)
     {
         $request->validate([
@@ -108,15 +109,10 @@ class CleaningRequestController extends Controller
             'service_type' => 'required|in:' . implode(',', array_keys(self::SERVICE_TYPES))
         ]);
 
-        $prices = $this->calculatePrices(
+        return response()->json($this->calculatePrices(
             $request->room_length,
             $request->room_width,
             $request->service_type
-        );
-
-        return response()->json(array_merge(
-            ['area' => $request->room_length * $request->room_width],
-            $prices
         ));
     }
 }
