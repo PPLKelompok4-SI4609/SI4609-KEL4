@@ -13,6 +13,8 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\TwoFactorController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\CleaningRequestController;
+use App\Http\Controllers\OrderController;
 
 // =======================
 // Halaman Awal / Umum
@@ -112,4 +114,19 @@ Route::post('/password/reset', [ResetPasswordController::class, 'reset'])->name(
 
 Route::get('/bantuan-darurat', function () {
     return view('HalamanBantuanDarurat.BantuanDarurat');
+});
+
+// User order routes
+Route::prefix('orders')->name('orders.')->group(function () {
+    Route::get('/', [OrderController::class, 'userIndex'])->name('user.index');
+});
+
+Route::prefix('cleaning-request')->name('cleaning-request.')->group(function () {
+    Route::get('/', [CleaningRequestController::class, 'create'])->name('create');
+    Route::post('/', [CleaningRequestController::class, 'store'])->name('store');
+    Route::get('/{service_type}', [CleaningRequestController::class, 'createWithService'])
+        ->name('create.with-service')
+        ->where('service_type', 'home_cleaning|office_cleaning|furniture_cleaning');
+    Route::get('/{order}/confirmation', [CleaningRequestController::class, 'confirmation'])->name('confirmation');
+    Route::post('/calculate-price', [CleaningRequestController::class, 'calculatePrice'])->name('calculate-price');
 });
