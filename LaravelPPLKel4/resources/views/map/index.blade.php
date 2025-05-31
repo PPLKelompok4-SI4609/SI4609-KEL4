@@ -209,146 +209,123 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    const floodZones = @json($floodZones) || [];
+      const floodZones = @json($floodZones) || [];
 
-    const indonesiaBounds = [
-      [-11.0, 94.0],  // Southwest corner (Southern Sumatra)
-      [6.5, 141.0]    // Northeast corner (Papua)
-    ];
+      const indonesiaBounds = [
+          [-11.0, 94.0],  // Southwest corner (Southern Sumatra)
+          [6.5, 141.0]    // Northeast corner (Papua)
+      ];
 
-    const map = L.map('map', { zoomControl: true }).fitBounds(indonesiaBounds);
+      const map = L.map('map', { zoomControl: true }).fitBounds(indonesiaBounds);
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      maxZoom: 18,
-    }).addTo(map);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+          maxZoom: 18,
+      }).addTo(map);
 
-    setTimeout(() => {
-      map.invalidateSize();
-    }, 200);
+      setTimeout(() => {
+          map.invalidateSize();
+      }, 200);
 
-    const markers = [];
+      const markers = [];
 
-    floodZones.forEach(city => {
-      let color;
-      if (city.riskLevel === 'High') {
-        color = '#dc2626';
-      } else if (city.riskLevel === 'Medium') {
-        color = '#f97316';
-      } else {
-        color = '#eab308';
-      }
+      floodZones.forEach(city => {
+          let color;
+          if (city.riskLevel === 'High') {
+              color = '#dc2626';
+          } else if (city.riskLevel === 'Medium') {
+              color = '#f97316';
+          } else {
+              color = '#eab308';
+          }
 
-      const svgIcon = L.divIcon({
-        className: '',
-        html: `
-          <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter: drop-shadow(0 0 10px ${color});">
-            <circle cx="18" cy="18" r="14" stroke="#334155" stroke-width="2" fill="${color}" fill-opacity="0.85"/>
-            <circle cx="18" cy="18" r="8" fill="white" fill-opacity="0.3"/>
-            <circle cx="18" cy="18" r="14" stroke="${color}" stroke-width="2" fill="none">
-              <animate attributeName="r" values="14;20;14" dur="2.5s" repeatCount="indefinite" />
-              <animate attributeName="opacity" values="1;0;1" dur="2.5s" repeatCount="indefinite" />
-            </circle>
-          </svg>
-        `,
-        iconSize: [36, 36],
-        iconAnchor: [18, 18],
-        popupAnchor: [0, -18],
+          const svgIcon = L.divIcon({
+              className: '',
+              html: `
+                  <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter: drop-shadow(0 0 10px ${color});">
+                      <circle cx="18" cy="18" r="14" stroke="#334155" stroke-width="2" fill="${color}" fill-opacity="0.85"/>
+                      <circle cx="18" cy="18" r="8" fill="white" fill-opacity="0.3"/>
+                      <circle cx="18" cy="18" r="14" stroke="${color}" stroke-width="2" fill="none">
+                          <animate attributeName="r" values="14;20;14" dur="2.5s" repeatCount="indefinite" />
+                          <animate attributeName="opacity" values="1;0;1" dur="2.5s" repeatCount="indefinite" />
+                      </circle>
+                  </svg>
+              `,
+              iconSize: [36, 36],
+              iconAnchor: [18, 18],
+              popupAnchor: [0, -18],
+          });
+
+          const marker = L.marker([city.latitude, city.longitude], { icon: svgIcon, riseOnHover: true, keyboard: true })
+              .addTo(map)
+              .bindPopup(
+                  `<strong class="font-semibold text-lg">${city.city}</strong><br>` +
+                  `Risk Level: <span style="color:${color}; font-weight:700;">${city.riskLevel}</span><br>` +
+                  `River Discharge: <span style="font-weight:600;">${city.riverDischarge} m³/s</span>`
+              );
+
+          markers.push({ city: city.city.toLowerCase(), marker, latlng: [city.latitude, city.longitude] });
       });
 
-      const marker = L.marker([city.latitude, city.longitude], { icon: svgIcon, riseOnHover: true, keyboard: true })
-        .addTo(map)
-        .bindPopup(
-          `<strong class="font-semibold text-lg">${city.city}</strong><br>` +
-          `Risk Level: <span style="color:${color}; font-weight:700;">${city.riskLevel}</span><br>` +
-          `River Discharge: <span style="font-weight:600;">${city.riverDischarge} m³/s</span>`
-        );
+      const searchWrapper = document.getElementById('searchWrapper');
+      const searchToggle = document.getElementById('searchToggle');
+      const searchForm = document.getElementById('searchForm');
+      const searchInput = document.getElementById('searchInput');
 
-      markers.push({ city: city.city.toLowerCase(), marker, latlng: [city.latitude, city.longitude] });
-    });
-
-    const searchWrapper = document.getElementById('searchWrapper');
-    const searchToggle = document.getElementById('searchToggle');
-    const searchForm = document.getElementById('searchForm');
-    const searchInput = document.getElementById('searchInput');
-
-    searchToggle.addEventListener('click', () => {
-      if (!searchWrapper.classList.contains('expanded')) {
-        searchWrapper.classList.add('expanded');
-        searchInput.focus();
-      }
-    });
-
-    function searchLocation() {
-      const query = searchInput.value.trim().toLowerCase();
-      if (!query) return;
-
-      const found = markers.find(m => m.city === query);
-
-      if (found) {
-        map.setView(found.latlng, 12, { animate: true });
-        found.marker.openPopup();
-        return;
-      }
-
-      const coords = query.split(',').map(s => s.trim());
-      if (coords.length === 2) {
-        const lat = parseFloat(coords[0]);
-        const lng = parseFloat(coords[1]);
-        if (!isNaN(lat) && !isNaN(lng) && lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180) {
-          map.setView([lat, lng], 12, { animate: true });
-          return;
-        }
-      }
-
-      if (typeof L.Control.Geocoder !== 'undefined') {
-        const geocoder = L.Control.Geocoder.nominatim();
-        geocoder.geocode(query, results => {
-          if (results.length > 0) {
-            const result = results[0];
-            map.setView(result.center, 12, { animate: true });
-            L.popup()
-              .setLatLng(result.center)
-              .setContent(`<strong>${result.name}</strong>`)
-              .openOn(map);
-          } else {
-            alert('Location not found. Please try another search term.');
+      searchToggle.addEventListener('click', () => {
+          if (!searchWrapper.classList.contains('expanded')) {
+              searchWrapper.classList.add('expanded');
+              searchInput.focus();
           }
-        });
-      } else {
-        alert('Location not found. Please try another search term.');
-      }
-    }
+      });
 
-    searchForm.addEventListener('submit', e => {
-      e.preventDefault();
-      searchLocation();
-    });
+      function searchLocation() {
+          const query = searchInput.value.trim().toLowerCase();
+          if (!query) {
+              // Reset map to default view
+              map.setView([ -6.2088, 106.8456 ], 5, { animate: true });  // Default to Jakarta coordinates
+              return;
+          }
 
-    searchInput.addEventListener('keydown', e => {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        searchLocation();
-      }
-    });
+          const found = markers.find(m => m.city === query);
 
-    document.addEventListener('click', (e) => {
-      if (!searchWrapper.contains(e.target)) {
-        if (searchWrapper.classList.contains('expanded')) {
-          searchWrapper.classList.remove('expanded');
-          searchInput.value = '';
-        }
+          if (found) {
+              map.setView(found.latlng, 12, { animate: true });
+              found.marker.openPopup();
+          } else {
+              alert('City not found. Please try another search term.');
+          }
       }
-    });
 
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        if (searchWrapper.classList.contains('expanded')) {
-          searchWrapper.classList.remove('expanded');
-          searchInput.value = '';
-        }
-      }
-    });
+      searchForm.addEventListener('submit', e => {
+          e.preventDefault();
+          searchLocation();
+      });
+
+      searchInput.addEventListener('keydown', e => {
+          if (e.key === 'Enter') {
+              e.preventDefault();
+              searchLocation();
+          }
+      });
+
+      document.addEventListener('click', (e) => {
+          if (!searchWrapper.contains(e.target)) {
+              if (searchWrapper.classList.contains('expanded')) {
+                  searchWrapper.classList.remove('expanded');
+                  searchInput.value = '';
+              }
+          }
+      });
+
+      document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') {
+              if (searchWrapper.classList.contains('expanded')) {
+                  searchWrapper.classList.remove('expanded');
+                  searchInput.value = '';
+              }
+          }
+      });
   });
 </script>
 @endsection

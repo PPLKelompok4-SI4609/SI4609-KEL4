@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Models\FloodZone;
@@ -46,53 +47,116 @@ class FloodController extends Controller
 
         $floodZones = [];
 
-        foreach ($cities as $city) {
-            $floodZone = FloodZone::where('name', $city['name'])->first();
+        // If search query is provided, look for a specific city
+        if ($request->has('search') && $request->input('search')) {
+            $searchQuery = strtolower($request->input('search'));
+            $cityFound = false;
 
-            // Check if the data exists and is not outdated (e.g., data older than 24 hours)
-            if ($floodZone && $floodZone->updated_at > Carbon::now()->subDay()) {
-                // Use the data from the database
-                $floodZones[] = [
-                    'city' => $city['name'],
-                    'latitude' => $city['latitude'],
-                    'longitude' => $city['longitude'],
-                    'riskLevel' => $floodZone->flood_risk_level,
-                    'riverDischarge' => $floodZone->river_discharge,
-                ];
-            } else {
-                // Fetch fresh data from the API
-                $response = Http::get('https://flood-api.open-meteo.com/v1/flood', [
-                    'latitude' => $city['latitude'],
-                    'longitude' => $city['longitude'],
-                    'daily' => 'river_discharge',
-                    'timezone' => 'Asia/Jakarta',
-                ]);
+            foreach ($cities as $city) {
+                if (strtolower($city['name']) == $searchQuery) {
+                    $cityFound = true;
+                    $floodZone = FloodZone::where('name', $city['name'])->first();
 
-                if ($response->successful()) {
-                    $floodData = $response->json();
-                    $riverDischarge = $floodData['daily']['river_discharge'][0]; 
-
-                    // Determine flood risk level
-                    $riskLevel = $this->getRiskLevel($riverDischarge);
-
-                    // Save the data to the database
-                    FloodZone::updateOrCreate(
-                        ['name' => $city['name']],
-                        [
+                    if ($floodZone && $floodZone->updated_at > Carbon::now()->subDay()) {
+                        // Use the data from the database
+                        $floodZones[] = [
+                            'city' => $city['name'],
                             'latitude' => $city['latitude'],
                             'longitude' => $city['longitude'],
-                            'river_discharge' => $riverDischarge,
-                            'flood_risk_level' => $riskLevel
-                        ]
-                    );
+                            'riskLevel' => $floodZone->flood_risk_level,
+                            'riverDischarge' => $floodZone->river_discharge,
+                        ];
+                    } else {
+                        // Fetch fresh data from the API
+                        $response = Http::get('https://flood-api.open-meteo.com/v1/flood', [
+                            'latitude' => $city['latitude'],
+                            'longitude' => $city['longitude'],
+                            'daily' => 'river_discharge',
+                            'timezone' => 'Asia/Jakarta',
+                        ]);
 
+                        if ($response->successful()) {
+                            $floodData = $response->json();
+                            $riverDischarge = $floodData['daily']['river_discharge'][0];
+
+                            // Determine flood risk level
+                            $riskLevel = $this->getRiskLevel($riverDischarge);
+
+                            // Save the data to the database
+                            FloodZone::updateOrCreate(
+                                ['name' => $city['name']],
+                                [
+                                    'latitude' => $city['latitude'],
+                                    'longitude' => $city['longitude'],
+                                    'river_discharge' => $riverDischarge,
+                                    'flood_risk_level' => $riskLevel
+                                ]
+                            );
+
+                            $floodZones[] = [
+                                'city' => $city['name'],
+                                'latitude' => $city['latitude'],
+                                'longitude' => $city['longitude'],
+                                'riskLevel' => $riskLevel,
+                                'riverDischarge' => $riverDischarge,
+                            ];
+                        }
+                    }
+                }
+            }
+
+            if (!$cityFound) {
+                return response()->json(['error' => 'City not found'], 404);
+            }
+        } else {
+            // Load all cities when no search is performed
+            foreach ($cities as $city) {
+                $floodZone = FloodZone::where('name', $city['name'])->first();
+
+                if ($floodZone && $floodZone->updated_at > Carbon::now()->subDay()) {
+                    // Use the data from the database
                     $floodZones[] = [
                         'city' => $city['name'],
                         'latitude' => $city['latitude'],
                         'longitude' => $city['longitude'],
-                        'riskLevel' => $riskLevel,
-                        'riverDischarge' => $riverDischarge,
+                        'riskLevel' => $floodZone->flood_risk_level,
+                        'riverDischarge' => $floodZone->river_discharge,
                     ];
+                } else {
+                    // Fetch fresh data from the API
+                    $response = Http::get('https://flood-api.open-meteo.com/v1/flood', [
+                        'latitude' => $city['latitude'],
+                        'longitude' => $city['longitude'],
+                        'daily' => 'river_discharge',
+                        'timezone' => 'Asia/Jakarta',
+                    ]);
+
+                    if ($response->successful()) {
+                        $floodData = $response->json();
+                        $riverDischarge = $floodData['daily']['river_discharge'][0];
+
+                        // Determine flood risk level
+                        $riskLevel = $this->getRiskLevel($riverDischarge);
+
+                        // Save the data to the database
+                        FloodZone::updateOrCreate(
+                            ['name' => $city['name']],
+                            [
+                                'latitude' => $city['latitude'],
+                                'longitude' => $city['longitude'],
+                                'river_discharge' => $riverDischarge,
+                                'flood_risk_level' => $riskLevel
+                            ]
+                        );
+
+                        $floodZones[] = [
+                            'city' => $city['name'],
+                            'latitude' => $city['latitude'],
+                            'longitude' => $city['longitude'],
+                            'riskLevel' => $riskLevel,
+                            'riverDischarge' => $riverDischarge,
+                        ];
+                    }
                 }
             }
         }
