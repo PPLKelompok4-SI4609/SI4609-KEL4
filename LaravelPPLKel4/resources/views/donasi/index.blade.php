@@ -96,7 +96,7 @@
     </div>
 @endif
 
-@section('scripts')
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Ensure close button exists before adding event listener
@@ -124,10 +124,6 @@
         }
     });
 </script>
-@endsection
-
-
-
 
    <!-- Popular Cause Section -->
    <section class="mb-20">
