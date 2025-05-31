@@ -60,7 +60,9 @@ Route::get('password/reset/{token}', [ResetPasswordController::class, 'showReset
 Route::post('password/reset', [ResetPasswordController::class, 'reset'])
     ->name('password.update');
 
-
+Route::get('/bantuan-darurat', function () {
+    return view('HalamanBantuanDarurat.BantuanDarurat');
+});
 
 
 

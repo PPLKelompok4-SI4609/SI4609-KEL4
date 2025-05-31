@@ -13,7 +13,7 @@
             Karena keselamatanmu adalah prioritas kami.
         </p>
         <div class="flex flex-wrap gap-4">
-            <a href="#" class="bg-blue-500 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-2xl transition duration-300">
+            <a href="/bantuan-darurat" class="bg-blue-500 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-2xl transition duration-300">
                 Bantuan Darurat
             </a>
             <a href="/articles" class="bg-blue-500 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-2xl transition duration-300">
