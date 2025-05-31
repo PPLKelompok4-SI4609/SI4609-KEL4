@@ -7,7 +7,11 @@
 
         <ul class="hidden md:flex space-x-6 text-gray-700 font-medium">
             @if(auth()->check() && session('two_factor_verified'))
-                <li><a href="#" class="hover:text-blue-600 transition">Donasi & Bantuan</a></li>
+                <li><a href="/donasi" 
+                    class="{{ Request::is('donasi*') ? 'text-blue-700 font-semibold' : 'text-gray-700 hover: hover:text-blue-600' }}">
+                    Donasi & Bantuan
+                    </a>
+                </li>
                 <li>
                     <a href="/pasca"
                     class="{{ Request::is('pasca*') ? 'text-blue-700 font-semibold' : 'text-gray-700 hover: hover:text-blue-600' }}">

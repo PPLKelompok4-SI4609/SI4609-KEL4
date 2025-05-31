@@ -7,6 +7,7 @@ use App\Http\Controllers\admin\AdminDashboardController;
 use App\Http\Controllers\WeatherController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CleaningController;
+use App\Http\Controllers\DonationController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\TwoFactorController;
@@ -75,6 +76,12 @@ Route::get('/cuaca', [WeatherController::class, 'index'])->middleware(['auth', '
 // Pasca Banjir
 // =======================
 Route::get('/pasca', [CleaningController::class, 'index'])->middleware(['auth', 'role:user', '2fa'])->name('pasca.index');
+
+// =======================
+// Donasi Banjir
+// =======================
+Route::get('/donasi', [DonationController::class, 'index'])->middleware(['auth', '2fa', 'role:user'])->name('donasi.index');
+Route::post('/donasi', [DonationController::class, 'store'])->middleware(['auth', '2fa', 'role:user'])->name('donasi.store');
 
 // =======================
 // Autentikasi
