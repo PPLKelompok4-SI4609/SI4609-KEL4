@@ -39,6 +39,17 @@
 </nav>
 <div class="flex justify-center items-center min-h-[80vh] mt-6">
     <div class="w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
+        @if (session('success'))
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+                {{ session('error') }}
+            </div>
+        @endif
         <div class="text-center mb-8">
             <img src="{{ asset('images/logo.png') }}" alt="FloodRescue Logo" class="h-32 mx-auto mb-4"> 
             <h2 class="text-3xl font-bold text-blue-600">FloodRescue</h2>

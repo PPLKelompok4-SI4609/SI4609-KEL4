@@ -19,6 +19,7 @@ class LaporanBanjir extends Model
         'kontak',
         'foto',
         'status',
+        'keterangan'
     ];
 
     public function user()

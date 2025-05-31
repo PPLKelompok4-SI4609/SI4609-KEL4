@@ -13,6 +13,19 @@ class Article extends Model
         'title',
         'content',
         'category',
+        'author',
         'image_url',
+        'status',
+        'user_id'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function author()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

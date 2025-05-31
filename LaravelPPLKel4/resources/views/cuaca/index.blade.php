@@ -20,6 +20,7 @@ body {
     height: calc(100vh - 60px);
     position: relative;
     overflow: hidden;
+    border-radius: 1rem 1rem 1rem 1rem;
 }
 #hero img.bg-image {
     position: absolute;

@@ -35,8 +35,7 @@ class RegisterController extends Controller
                 'two_factor_enabled' => true,
             ]);
 
-            return redirect()->route('login')
-                           ->with('success', 'Registrasi berhasil! Silakan Login.');
+            return redirect()->route('login')->with('success', 'Registrasi berhasil! Silakan Login.');
         } catch (\Exception $e) {
             return back()->withErrors(['error' => 'Terjadi kesalahan saat registrasi. Silakan coba lagi.'])
                         ->withInput($request->except('password'));

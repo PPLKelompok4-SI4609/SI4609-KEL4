@@ -1,4 +1,4 @@
-<nav class="bg-white shadow">
+<nav class="bg-white shadow sticky top-0 z-50">
     <div class="container mx-auto flex items-center justify-between py-4 px-6">
         <a href="/home" class="flex items-center gap-2 text-xl font-bold text-blue-600 hover:text-blue-700 transition">
             <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-8 h-8">
@@ -14,7 +14,7 @@
                 </li>
                 <li>
                     <a href="/pasca"
-                    class="{{ Request::is('pasca*') ? 'text-blue-700 font-semibold' : 'text-gray-700 hover: hover:text-blue-600' }}">
+                    class="{{ Request::is('pasca*') || Request::is('cleaning-request*') || Request::is('orders*') ? 'text-blue-700 font-semibold' : 'text-gray-700 hover: hover:text-blue-600' }}">
                     Layanan Pasca Banjir
                     </a>
                 </li>
@@ -32,7 +32,7 @@
                 </li>
                 <li>
                     <a href="/peta" 
-                    class="{{ Request::is('map*') ? 'text-blue-700 font-semibold' : 'text-gray-700 hover:text-blue-600' }}">
+                    class="{{ Request::is('peta*') ? 'text-blue-700 font-semibold' : 'text-gray-700 hover:text-blue-600' }}">
                     Peta Wilayah
                     </a>
                 </li>

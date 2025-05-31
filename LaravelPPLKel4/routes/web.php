@@ -4,6 +4,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LaporanBanjirController;
 use App\Http\Controllers\admin\AdminLaporanController;
 use App\Http\Controllers\admin\AdminDashboardController;
+use App\Http\Controllers\admin\AdminMapController;
+use App\Http\Controllers\admin\AdminUserController;
+use App\Http\Controllers\admin\AdminCleaningController;
+use App\Http\Controllers\admin\AdminArticleController;
+use App\Http\Controllers\BantuanDaruratController;
 use App\Http\Controllers\WeatherController;
 use App\Http\Controllers\FloodController;
 use App\Http\Controllers\ArticleController;
@@ -58,6 +63,40 @@ Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
 });
 
 // =======================
+// Kelola User (Admin)
+// =======================
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/kelola-user', [AdminUserController::class, 'index'])->name('users.index');
+    Route::delete('/kelola-user/{user}', [AdminUserController::class, 'destroy'])->name('users.destroy');
+});
+
+// =======================
+// Kelola Peta Banjir (Admin)
+// =======================
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/peta-banjir', [AdminMapController::class, 'index'])->name('map.index');
+    Route::post('/peta-banjir/update', [AdminMapController::class, 'updateFloodZones'])->name('map.updateFloodZones');
+});
+
+// =======================
+// Kelola Artikel (Admin)
+// =======================
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/artikel', [AdminArticleController::class, 'index'])->name('articles.index');
+    Route::get('/artikel/{id}', [AdminArticleController::class, 'adminShow'])->name('articles.show');
+    Route::put('artikel/{id}/status', [AdminArticleController::class, 'updateStatus'])->name('articles.updateStatus');
+    Route::delete('/artikel/{id}', [AdminArticleController::class, 'destroy'])->name('articles.destroy');
+});
+
+// ========================
+// Kelola Layanan Pembersihan (Admin)
+// =======================
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/pembersihan', [AdminCleaningController::class, 'index'])->name('cleaning.index');
+    Route::delete('/pembersihan/{order}', [AdminCleaningController::class, 'destroy'])->name('cleaning.destroy');
+});
+
+// =======================
 // Artikel
 // =======================
 Route::prefix('articles')->middleware(['auth', 'role:user', '2fa'])->group(function () {
@@ -69,6 +108,10 @@ Route::prefix('articles')->middleware(['auth', 'role:user', '2fa'])->group(funct
     Route::put('/{article}', [ArticleController::class, 'update'])->name('articles.update');
     Route::delete('/{article}', [ArticleController::class, 'destroy'])->name('articles.destroy');
 });
+Route::get('/listarticle', [ArticleController::class, 'myArticles'])
+    ->middleware(['auth', 'role:user', '2fa'])
+    ->name('articles.listarticle');
+
 
 // =======================
 // Cuaca
@@ -78,7 +121,7 @@ Route::get('/cuaca', [WeatherController::class, 'index'])->middleware(['auth', '
 // =======================
 // Peta
 // =======================
-Route::get('/peta', [FloodController::class, 'showFloodMap']);
+Route::get('/peta', [FloodController::class, 'showFloodMap'])->middleware(['auth', 'role:user', '2fa']);
 
 // =======================
 // Pasca Banjir
@@ -88,8 +131,8 @@ Route::get('/pasca', [CleaningController::class, 'index'])->middleware(['auth', 
 // =======================
 // Donasi Banjir
 // =======================
-Route::get('/donasi', [DonationController::class, 'index'])->middleware(['auth', '2fa', 'role:user'])->name('donasi.index');
-Route::post('/donasi', [DonationController::class, 'store'])->middleware(['auth', '2fa', 'role:user'])->name('donasi.store');
+Route::get('/donasi', [DonationController::class, 'index'])->middleware(['auth', 'role:user', '2fa'])->name('donasi.index');
+Route::post('/donasi', [DonationController::class, 'store'])->middleware(['auth', 'role:user', '2fa'])->name('donasi.store');
 
 // =======================
 // Autentikasi
@@ -118,16 +161,22 @@ Route::post('/password/email', [ForgotPasswordController::class, 'sendResetLinkE
 Route::get('/password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
 Route::post('/password/reset', [ResetPasswordController::class, 'reset'])->name('password.update');
 
-Route::get('/bantuan-darurat', function () {
-    return view('HalamanBantuanDarurat.BantuanDarurat');
-});
+// =======================
+// Bantuan Darurat
+// =======================
+Route::get('/bantuan-darurat', [BantuanDaruratController::class, 'index'])->middleware(['auth'])->name('halaman.bantuan');
 
-// User order routes
-Route::prefix('orders')->name('orders.')->group(function () {
+// =======================
+// Pesanan Pengguna
+// =======================
+Route::prefix('orders')->name('orders.')->middleware(['auth', 'role:user', '2fa'])->group(function () {
     Route::get('/', [OrderController::class, 'userIndex'])->name('user.index');
 });
 
-Route::prefix('cleaning-request')->name('cleaning-request.')->group(function () {
+// =======================
+// Permintaan Pembersihan
+// =======================
+Route::prefix('cleaning-request')->name('cleaning-request.')->middleware(['auth', 'role:user', '2fa'])->group(function () {
     Route::get('/', [CleaningRequestController::class, 'create'])->name('create');
     Route::post('/', [CleaningRequestController::class, 'store'])->name('store');
     Route::get('/{service_type}', [CleaningRequestController::class, 'createWithService'])

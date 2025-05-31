@@ -39,7 +39,7 @@ class TwoFactorController extends Controller
 
         $user->resetTwoFactorCode();
 
-        return redirect()->intended('welcome');
+        return redirect()->intended('welcome')->with('success', 'Anda telah berhasil login!');
     }
 
     public function resend()
