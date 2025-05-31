@@ -5,6 +5,7 @@ use App\Http\Controllers\LaporanBanjirController;
 use App\Http\Controllers\admin\AdminLaporanController;
 use App\Http\Controllers\admin\AdminDashboardController;
 use App\Http\Controllers\WeatherController;
+use App\Http\Controllers\FloodController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CleaningController;
 use App\Http\Controllers\DonationController;
@@ -73,6 +74,11 @@ Route::prefix('articles')->middleware(['auth', 'role:user', '2fa'])->group(funct
 // Cuaca
 // =======================
 Route::get('/cuaca', [WeatherController::class, 'index'])->middleware(['auth', 'role:user', '2fa'])->name('cuaca.index');
+
+// =======================
+// Peta
+// =======================
+Route::get('/peta', [FloodController::class, 'showFloodMap']);
 
 // =======================
 // Pasca Banjir
