@@ -39,7 +39,7 @@
     </div>
     <div class="bg-white p-4 rounded-lg shadow-sm">
         <p class="text-gray-500 text-sm">Jumlah Pemesan Layanan Pasca Banjir</p>
-        <h3 class="text-2xl font-semibold text-purple-500">0</h3>
+        <h3 class="text-2xl font-semibold text-purple-500">{{ $cleaningCount }}</h3>
     </div>
 </div>
 

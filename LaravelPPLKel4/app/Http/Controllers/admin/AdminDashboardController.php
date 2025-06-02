@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Http;
 use App\Models\User;
 use App\Models\LaporanBanjir;
 use App\Models\Article;
+use App\Models\CleaningRequest;
 
 class AdminDashboardController extends Controller
 {
@@ -48,6 +49,7 @@ class AdminDashboardController extends Controller
                                 ->pluck('total', 'status')
                                 ->toArray(),
             'articleCount' => Article::count(),
+            'cleaningCount' => CleaningRequest::count(),
             'cityWeatherData' => $cityWeatherData,
         ]);
     }

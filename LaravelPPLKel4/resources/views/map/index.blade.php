@@ -214,6 +214,55 @@
   .font-semibold {
     font-weight: 600;
   }
+
+  @media (max-width: 600px) {
+    #legend {
+      margin: 6px;
+      padding: 0.4rem;
+      width: 150px;
+      font-size: 0.7rem;
+      box-shadow: none;
+      border: 1px solid #ccc;
+    }
+
+    #legend h3 {
+      font-size: 0.8rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .legend-color-box {
+      width: 8px;
+      height: 8px;
+    }
+
+    .legend-color-box svg {
+      width: 8px;
+      height: 8px;
+    }
+
+    #legend .text-sm {
+      font-size: 0.6rem;
+    }
+
+    #legend .font-semibold {
+      font-size: 0.7rem;
+    }
+
+    #legend .flex.items-center.gap-4,
+    #legend .flex.items-center.gap-3 {
+      gap: 0.3rem;
+      margin-bottom: 0.4rem;
+    }
+
+    #legend img {
+      width: 16px;
+      height: 16px;
+    }
+
+    hr {
+      margin-bottom: 0.4rem;
+    }
+  }
 </style>
 
 <script>
