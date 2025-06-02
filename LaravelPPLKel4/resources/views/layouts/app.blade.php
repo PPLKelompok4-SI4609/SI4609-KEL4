@@ -13,14 +13,15 @@
     </style>
 </head>
 <body class="min-h-screen bg-blue-100">
+    <div class="flex flex-col min-h-screen">
+        @include('layouts.navbar')
 
-    @include('layouts.navbar')
+        <main class="container mx-auto py-10 px-4 flex-grow">
+            @yield('content')
+        </main>
 
-    <main class="container mx-auto py-10 px-4">
-        @yield('content')
-    </main>
-
-    @include('layouts.footer')
+        @include('layouts.footer')
+    </div>
 
     <!-- Dotlottie script -->
     <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>

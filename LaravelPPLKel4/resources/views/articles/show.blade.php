@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'FloodRescue | Article Details')
+@section('title', 'FloodRescue | Lihat Artikel')
 
 @section('content')
 <div class="bg-white text-gray-900">
@@ -9,7 +9,16 @@
 
     {{-- Judul Artikel --}}
     <div>
-      <h1 class="text-4xl font-semibold mb-6">{{ $article->title }}</h1>
+      <h1 class="text-4xl font-semibold mb-2">{{ $article->title }}</h1>
+      
+      <p class="text-sm text-gray-500 mb-1">
+        <span class="font-semibold">Penulis:</span> {{ $article->user->name ?? '-' }}
+      </p>
+      
+      <p class="text-sm text-gray-500 mb-4">
+        <span class="font-semibold">Dibuat pada:</span> {{ $article->created_at->format('d M Y') }}
+      </p>
+      
       <p class="text-base text-gray-500 mb-4">
         <span class="font-semibold">Category:</span> {{ $article->category }}
       </p>
@@ -21,7 +30,7 @@
         <img src="{{ asset('storage/' . $article->image_url) }}" alt="{{ $article->title }}" class="w-3/4 rounded-lg shadow-md mx-auto">
       @else
         <div class="w-full h-64 bg-gray-200 flex items-center justify-center rounded-lg shadow-md">
-          <span class="text-gray-500">No Image Available</span>
+          <span class="text-gray-500">Gambar Tidak Tersedia</span>
         </div>
       @endif
     </div>

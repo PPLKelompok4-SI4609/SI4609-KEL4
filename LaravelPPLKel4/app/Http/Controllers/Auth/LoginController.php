@@ -46,10 +46,10 @@ class LoginController extends Controller
             }
 
             if ($user->role === 'admin') {
-                return redirect()->route('admin.dashboard');
+                return redirect()->route('admin.dashboard')->with('success', 'Anda telah berhasil login sebagai admin!');
             }
 
-            return redirect()->route('welcome');
+            return redirect()->route('welcome')->with('success', 'Anda telah berhasil login!');
         }
 
         return back()->withErrors([

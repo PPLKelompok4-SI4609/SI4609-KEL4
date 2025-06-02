@@ -15,10 +15,12 @@
 <body class="bg-blue-100 min-h-screen flex">
 
     <!-- Sidebar -->
-    @include('admin.layouts.sidebar')
+    <aside class="w-64 h-screen fixed top-0 left-0 bg-white border-r border-gray-200 flex flex-col justify-between">
+        @include('admin.layouts.sidebar')
+    </aside>
 
     <!-- Main Content -->
-    <div class="flex-1 p-6 overflow-y-auto">
+    <div class="ml-64 p-6 overflow-y-auto min-h-screen flex-1">
         @yield('content')
     </div>
 

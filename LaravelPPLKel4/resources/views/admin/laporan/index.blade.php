@@ -7,9 +7,17 @@
     <h1 class="text-3xl font-bold text-blue-600">Kelola Laporan Banjir</h1>
 </div>
 
-@if (session('success'))
-    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
-        {{ session('success') }}
+@if(session('success'))
+    <div id="success-alert" class="fixed top-14 left-1/2 transform -translate-x-1/2 z-50 w-[90%] max-w-xl px-6 py-4 rounded bg-green-100 text-green-800 shadow-lg transition-opacity duration-500">
+        <span>{{ session('success') }}</span>
+        <button onclick="closeAlert('success-alert')" class="absolute top-2 right-3 text-green-800 hover:text-green-600 text-lg font-bold">&times;</button>
+    </div>
+@endif
+
+@if(session('error'))
+    <div id="error-alert" class="fixed top-14 left-1/2 transform -translate-x-1/2 z-50 w-[90%] max-w-xl px-6 py-4 rounded bg-red-100 text-red-800 shadow-lg transition-opacity duration-500">
+        <span>{{ session('error') }}</span>
+        <button onclick="closeAlert('error-alert')" class="absolute top-2 right-3 text-red-800 hover:text-red-600 text-lg font-bold">&times;</button>
     </div>
 @endif
 
@@ -57,11 +65,8 @@
 
                     <div class="flex flex-col items-end gap-2">
                         @if ($laporan->status == 'Diproses')
-                            <a href="https://api.whatsapp.com/send?phone=6281316163355" target="_blank" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm transition">
-                                Hubungi Tim Basarnas Bandung
-                            </a>
-                            <a href="https://api.whatsapp.com/send?phone=6282123882676" target="_blank" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm transition">
-                                Hubungi Tim Relawan Nusantara
+                            <a href="/bantuan-darurat" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm transition">
+                                Hubungi Bantuan Darurat
                             </a>
                         @endif
 
@@ -151,6 +156,28 @@
             field.style.display = 'block';
         } else {
             field.style.display = 'none';
+        }
+    }
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        ['success-alert', 'error-alert'].forEach(id => {
+            const alert = document.getElementById(id);
+            if (alert) {
+                setTimeout(() => {
+                    alert.classList.add('opacity-0');
+                    setTimeout(() => alert.remove(), 500);
+                }, 5000);
+            }
+        });
+    });
+
+    function closeAlert(id) {
+        const alert = document.getElementById(id);
+        if (alert) {
+            alert.classList.add('opacity-0');
+            setTimeout(() => alert.remove(), 500);
         }
     }
 </script>

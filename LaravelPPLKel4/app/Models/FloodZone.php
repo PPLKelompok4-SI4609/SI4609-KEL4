@@ -12,12 +12,15 @@ class FloodZone extends Model
     protected $table = 'flood_zones';
 
     protected $fillable = [
-        'city',
+        'name',
         'latitude',
         'longitude',
-        'riskLevel',
-        'riverDischarge',
+        'river_discharge', // Kolom untuk menyimpan debit sungai
+        'flood_risk_level', // Kolom untuk menyimpan level risiko banjir
     ];
 
-    protected $guarded = [];
+    protected $casts = [
+        'latitude' => 'decimal:7',
+        'longitude' => 'decimal:7',
+    ];
 }

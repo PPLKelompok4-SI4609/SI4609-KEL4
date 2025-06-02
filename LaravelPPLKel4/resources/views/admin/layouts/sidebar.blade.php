@@ -1,6 +1,9 @@
-<aside class="w-64 bg-white border-r border-gray-200 hidden md:flex flex-col">
+<aside class="w-64 min-w-[16rem] h-screen bg-white border-r border-gray-200 hidden md:flex flex-col justify-between">
     <div class="p-6">
-        <h1 class="text-2xl font-bold text-blue-600">FloodRescue</h1>
+        <a href="{{ route('admin.dashboard') }}" class="flex items-center space-x-2">
+            <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-8 h-8">
+            <h1 class="text-2xl font-bold text-blue-600 hover:text-blue-800 transform transition hover:">FloodRescue</h1>
+        </a>
         <p class="text-sm text-gray-500 mt-1">Admin Panel</p>
     </div>
     @auth
@@ -31,29 +34,27 @@
         </a>
         <a href="{{ route('admin.laporan.index') }}" 
             class="block px-4 py-2 rounded-lg transition 
-                {{ Request::is('admin/laporan') || Request::is('admin/laporan/*') ? 'text-blue-700 font-semibold bg-blue-100' : 'text-gray-700 hover:bg-blue-100 hover:text-blue-600' }}">
+                {{ Request::is('admin/laporan') || Request::is('admin/laporan/*') || Request::is('bantuan-darurat') ? 'text-blue-700 font-semibold bg-blue-100' : 'text-gray-700 hover:bg-blue-100 hover:text-blue-600' }}">
             Laporan Banjir
         </a>
-        <a href="#" 
-           class="block px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition">
+        <a href="{{ route('admin.articles.index') }}" 
+            class="block px-4 py-2 rounded-lg transition 
+                {{ Request::is('admin/artikel') || Request::is('admin/artikel/*') ? 'text-blue-700 font-semibold bg-blue-100' : 'text-gray-700 hover:bg-blue-100 hover:text-blue-600' }}">
             Artikel
         </a>
-        <a href="#" 
-           class="block px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition">
+        <a href="{{ route('admin.users.index') }}" 
+            class="block px-4 py-2 rounded-lg transition 
+                {{ Request::is('admin/kelola-user') || Request::is('admin/kelola-user/*') ? 'text-blue-700 font-semibold bg-blue-100' : 'text-gray-700 hover:bg-blue-100 hover:text-blue-600' }}">
             Pengguna
         </a>
-        <a href="#" 
-           class="block px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition">
-            Layanan Pasca Banjir
+        <a href="{{ route('admin.cleaning.index') }}" 
+            class="block px-4 py-2 rounded-lg transition 
+                {{ Request::is('admin/pembersihan') || Request::is('admin/pembersihan/*') ? 'text-blue-700 font-semibold bg-blue-100' : 'text-gray-700 hover:bg-blue-100 hover:text-blue-600' }}">            Layanan Pasca Banjir
         </a>
         <a href="{{ route('admin.map.index') }}" 
             class="block px-4 py-2 rounded-lg transition 
-                {{ Request::is('admin/map') || Request::is('admin/map/*') ? 'text-blue-700 font-semibold bg-blue-100' : 'text-gray-700 hover:bg-blue-100 hover:text-blue-600' }}">
+                {{ Request::is('admin/peta-banjir') || Request::is('admin/peta-banjir/*') ? 'text-blue-700 font-semibold bg-blue-100' : 'text-gray-700 hover:bg-blue-100 hover:text-blue-600' }}">
             Peta Wilayah Banjir
-        </a>
-        <a href="#" 
-           class="block px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition">
-            Pengaturan
         </a>
     </nav>
     <div class="p-4 border-t border-gray-200">

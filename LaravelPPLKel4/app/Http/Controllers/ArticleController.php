@@ -13,20 +13,21 @@ class ArticleController extends Controller
      */
     public function index(Request $request)
     {
-        // Get the search query and category filter from the request
         $searchQuery = $request->input('search');
         $category = $request->input('category');
 
-        // Query articles, applying search and category filters if they exist
-        $articles = Article::when($category, function ($query, $category) {
-            return $query->where('category', $category);
-        })
-        ->when($searchQuery, function ($query, $searchQuery) {
-            return $query->where('title', 'like', '%' . $searchQuery . '%')
-                         ->orWhere('content', 'like', '%' . $searchQuery . '%');
-        })
-        ->latest()
-        ->paginate(10);
+        $articles = Article::where('status', 'approved') // Tambahkan ini untuk filter status approved
+            ->when($category, function ($query, $category) {
+                return $query->where('category', $category);
+            })
+            ->when($searchQuery, function ($query, $searchQuery) {
+                return $query->where(function($q) use ($searchQuery) {
+                    $q->where('title', 'like', '%' . $searchQuery . '%')
+                    ->orWhere('content', 'like', '%' . $searchQuery . '%');
+                });
+            })
+            ->latest()
+            ->paginate(10);
 
         return view('articles.index', compact('articles', 'searchQuery', 'category'));
     }
@@ -50,6 +51,7 @@ class ArticleController extends Controller
             'content' => 'required|string',
             'category' => 'required|in:Musim Kemarau,Musim Hujan', // Correct validation for category
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Image validation (optional)
+            'status' => 'nullable|in:approved,rejected', // Optional status validation
         ]);
 
         // Check if there's an uploaded file
@@ -64,10 +66,13 @@ class ArticleController extends Controller
             'title' => $request->title,
             'content' => $request->content,
             'category' => $request->category,
+            'author' => auth()->user()->name, // Use the authenticated user's name
             'image_url' => $path, // Store the file path
+            'status' => $request->status ?? 'pending', // Default status to pending if not provided
+            'user_id' => auth()->id(), // Use the authenticated user's ID
         ]);
 
-        return redirect()->route('articles.index')->with('success', 'Artikel berhasil ditambahkan.');
+        return redirect()->route('articles.listarticle')->with('success', 'Artikel berhasil ditambahkan.');
     }
 
     /**
@@ -76,7 +81,7 @@ class ArticleController extends Controller
     public function show($id)
     {
         // Display the article by its ID
-        $article = Article::findOrFail($id);
+        $article = Article::with('user')->findOrFail($id);
         return view('articles.show', compact('article'));
     }
 
@@ -121,7 +126,7 @@ class ArticleController extends Controller
             'category' => $request->category,
         ]);
 
-        return redirect()->route('articles.index')->with('success', 'Artikel berhasil diperbarui.');
+        return redirect()->route('articles.listarticle')->with('success', 'Artikel berhasil diperbarui.');
     }
 
     /**
@@ -136,6 +141,13 @@ class ArticleController extends Controller
 
         // Delete the article itself
         $article->delete();
-        return redirect()->route('articles.index')->with('success', 'Artikel berhasil dihapus.');
+        return redirect()->route('articles.listarticle')->with('success', 'Artikel berhasil dihapus.');
+    }
+
+    public function myArticles()
+    {
+        // Get the authenticated user's articles
+        $articles = Article::where('user_id', auth()->id())->latest()->paginate(10);
+        return view('articles.listarticle', compact('articles'));
     }
 }

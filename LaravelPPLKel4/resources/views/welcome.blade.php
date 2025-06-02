@@ -68,6 +68,19 @@
         </div>
     </div>
 </nav>
+@if(session('success'))
+    <div id="success-alert" class="fixed top-14 left-1/2 transform -translate-x-1/2 z-50 w-[90%] max-w-xl px-6 py-4 rounded bg-green-100 text-green-800 shadow-lg transition-opacity duration-500">
+        <span>{{ session('success') }}</span>
+        <button onclick="closeAlert('success-alert')" class="absolute top-2 right-3 text-green-800 hover:text-green-600 text-lg font-bold">&times;</button>
+    </div>
+@endif
+
+@if(session('error'))
+    <div id="error-alert" class="fixed top-14 left-1/2 transform -translate-x-1/2 z-50 w-[90%] max-w-xl px-6 py-4 rounded bg-red-100 text-red-800 shadow-lg transition-opacity duration-500">
+        <span>{{ session('error') }}</span>
+        <button onclick="closeAlert('error-alert')" class="absolute top-2 right-3 text-red-800 hover:text-red-600 text-lg font-bold">&times;</button>
+    </div>
+@endif
 <div class="col-12 text-center">
     <div class="welcome-container" style="padding: 4rem 2rem;">
         <div class="logo-container mb-4" style="display: flex; justify-content: center; align-items: center;">
@@ -75,11 +88,11 @@
                     style="width: 200px; height: auto; margin: 0 auto;">
         </div>
         
-        <h1 class="mega-title mb-4 animate-fade-in" style="font-family: 'Poppins', sans-serif; font-size: 4.5rem; font-weight: 700; color: #1565c0; text-shadow: 2px 2px 4px rgba(0,0,0,0.1);">
+        <h1 class="mega-title mb-4 animate-fade-in" style="font-family: 'Poppins', sans-serif; font-size: 4rem; font-weight: 700; color: #1565c0; text-shadow: 2px 2px 4px rgba(0,0,0,0.1);">
             Selamat datang di FloodRescue!
         </h1>
         
-        <p class="sub-title animate-fade-in-delay" style="font-family: 'Poppins', sans-serif; font-size: 2rem; color: #424242; margin-bottom: 2rem;">
+        <p class="sub-title animate-fade-in-delay" style="font-family: 'Poppins', sans-serif; font-size: 1.5rem; color: #424242; margin-bottom: 2rem;">
             Bersama Lawan Banjir
         </p>
         
@@ -163,20 +176,38 @@
 </style>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    let timeLeft = 5;
-    const timerElement = document.getElementById('timer');
-    
-    const countdown = setInterval(function() {
-        timeLeft--;
-        timerElement.textContent = timeLeft;
+    document.addEventListener('DOMContentLoaded', function() {
+        let timeLeft = 5;
+        const timerElement = document.getElementById('timer');
         
-        if (timeLeft <= 0) {
-            clearInterval(countdown);
-            window.location.href = '/home';
+        const countdown = setInterval(function() {
+            timeLeft--;
+            timerElement.textContent = timeLeft;
+            
+            if (timeLeft <= 0) {
+                clearInterval(countdown);
+                window.location.href = '/home';
+            }
+        }, 1000);
+
+        ['success-alert', 'error-alert'].forEach(id => {
+            const alert = document.getElementById(id);
+            if (alert) {
+                setTimeout(() => {
+                    alert.classList.add('opacity-0');
+                    setTimeout(() => alert.remove(), 500);
+                }, 4000);
+            }
+        });
+    });
+
+    function closeAlert(id) {
+        const alert = document.getElementById(id);
+        if (alert) {
+            alert.classList.add('opacity-0');
+            setTimeout(() => alert.remove(), 500);
         }
-    }, 1000);
-});
+    }
 </script>
 </body>
 </html>

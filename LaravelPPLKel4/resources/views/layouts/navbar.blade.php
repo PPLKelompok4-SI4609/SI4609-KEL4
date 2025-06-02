@@ -1,32 +1,27 @@
-<nav class="bg-white shadow">
+<nav class="bg-white shadow sticky top-0 z-50">
     <div class="container mx-auto flex items-center justify-between py-4 px-6">
         <a href="/home" class="flex items-center gap-2 text-xl font-bold text-blue-600 hover:text-blue-700 transition">
             <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-8 h-8">
             FloodRescue
         </a>
 
-        <ul class="hidden md:flex space-x-6 text-gray-700 font-medium">
+        <ul class="hidden md:flex space-x-8 text-gray-700 font-medium">
             @if(auth()->check() && session('two_factor_verified'))
-                <li><a href="#" class="hover:text-blue-600 transition">Donasi & Bantuan</a></li>
-                <li>
-                    <a href="/pasca"
-                    class="{{ Request::is('pasca*') ? 'text-blue-700 font-semibold' : 'text-gray-700 hover: hover:text-blue-600' }}">
-                    Layanan Pasca Banjir
-                    </a>
-                </li>
-                <li>
-                    <a href="/laporan"
-                    class="{{ Request::is('laporan*') ? 'text-blue-700 font-semibold' : 'text-gray-700 hover: hover:text-blue-600' }}">
-                    Laporan Banjir
-                    </a>
-                </li>
-                <li>
-                    <a href="/cuaca" 
-                    class="{{ Request::is('cuaca*') ? 'text-blue-700 font-semibold' : 'text-gray-700 hover:text-blue-600' }}">
-                    Info Cuaca
-                    </a>
-                </li>
-                <li><a href="#" class="hover:text-blue-600 transition">Peta Wilayah</a></li>
+                <li><a href="/donasi" class="{{ Request::is('donasi*') ? 'text-blue-700 font-semibold' : 'hover:text-blue-600' }}">Donasi & Bantuan</a></li>
+                <li><a href="/pasca" class="{{ Request::is('pasca*') || Request::is('cleaning-request*') || Request::is('orders*') ? 'text-blue-700 font-semibold' : 'hover:text-blue-600' }}">Layanan Pasca Banjir</a></li>
+                <li><a href="/laporan" class="{{ Request::is('laporan*') ? 'text-blue-700 font-semibold' : 'hover:text-blue-600' }}">Laporan Banjir</a></li>
+                <li><a href="/cuaca" class="{{ Request::is('cuaca*') ? 'text-blue-700 font-semibold' : 'hover:text-blue-600' }}">Info Cuaca</a></li>
+                <li><a href="/peta" class="{{ Request::is('peta*') ? 'text-blue-700 font-semibold' : 'hover:text-blue-600' }}">Peta Wilayah</a></li>
+            @endif
+        </ul>
+
+        <ul id="mobile-menu" class="absolute top-20 left-0 w-full bg-white shadow-md flex-col items-start space-y-4 px-6 py-4 md:hidden hidden z-40 text-gray-700 font-medium">
+            @if(auth()->check() && session('two_factor_verified'))
+                <li><a href="/donasi" class="{{ Request::is('donasi*') ? 'text-blue-700 font-semibold' : 'hover:text-blue-600' }}">Donasi & Bantuan</a></li>
+                <li><a href="/pasca" class="{{ Request::is('pasca*') || Request::is('cleaning-request*') || Request::is('orders*') ? 'text-blue-700 font-semibold' : 'hover:text-blue-600' }}">Layanan Pasca Banjir</a></li>
+                <li><a href="/laporan" class="{{ Request::is('laporan*') ? 'text-blue-700 font-semibold' : 'hover:text-blue-600' }}">Laporan Banjir</a></li>
+                <li><a href="/cuaca" class="{{ Request::is('cuaca*') ? 'text-blue-700 font-semibold' : 'hover:text-blue-600' }}">Info Cuaca</a></li>
+                <li><a href="/peta" class="{{ Request::is('peta*') ? 'text-blue-700 font-semibold' : 'hover:text-blue-600' }}">Peta Wilayah</a></li>
             @endif
         </ul>
         
@@ -81,5 +76,24 @@
                 @endif
             @endauth
         </div>
+
+        @if(auth()->check() && session('two_factor_verified'))
+            <button id="menu-toggle" class="md:hidden text-gray-700 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        @endif
     </div>
 </nav>
+
+<script>
+    const toggle = document.getElementById('menu-toggle');
+    const menu = document.getElementById('mobile-menu');
+
+    toggle.addEventListener('click', () => {
+        menu.classList.toggle('hidden');
+    });
+</script>
