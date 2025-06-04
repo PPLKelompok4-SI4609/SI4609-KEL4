@@ -3,8 +3,28 @@
         <h1 class="text-2xl font-bold text-blue-600">FloodRescue</h1>
         <p class="text-sm text-gray-500 mt-1">Admin Panel</p>
     </div>
+    @auth
+        <div class="flex items-center space-x-3 ml-6">
+            <dotlottie-player
+                src="https://lottie.host/06e4e57a-f9d6-443c-ab07-6de34da61307/DHBDrVzYes.lottie"
+                background="transparent"
+                speed="1"
+                style="width: 30px; height: 30px;"
+                loop
+                autoplay>
+            </dotlottie-player>
+            <div class="text-left leading-tight">
+                <p class="text-sm font-semibold text-gray-800">
+                    {{ Auth::user()->name }}
+                </p>
+                <p class="text-xs text-gray-500">
+                    {{ Auth::user()->email }}
+                </p>
+            </div>
+        </div>
+    @endauth
     <nav class="flex-1 px-4 mt-4 space-y-2">
-        <a href="{{ route('admin.laporan.index') }}" 
+        <a href="{{ route('admin.dashboard') }}" 
            class="block px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition">
             Dashboard
         </a>
@@ -14,15 +34,29 @@
         </a>
         <a href="#" 
            class="block px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition">
+            Artikel
+        </a>
+        <a href="#" 
+           class="block px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition">
+            Pengguna
+        </a>
+        <a href="#" 
+           class="block px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition">
+            Layanan Pasca Banjir
+        </a>
+        <a href="#" 
+           class="block px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-100 hover:text-blue-600 transition">
             Pengaturan
         </a>
     </nav>
     <div class="p-4 border-t border-gray-200">
-        <form method="POST" action="#">
+        <form method="POST" action="{{ route('logout') }}">
             @csrf
-            <button type="submit" class="w-full text-left px-4 py-2 rounded-lg text-gray-700 hover:bg-red-100 hover:text-red-600 transition">
+            <button type="submit" class="w-full text-center px-4 py-2 rounded-lg text-gray-700 hover:bg-red-100 hover:text-red-600 transition">
                 Logout
             </button>
         </form>
     </div>
 </aside>
+
+<script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>

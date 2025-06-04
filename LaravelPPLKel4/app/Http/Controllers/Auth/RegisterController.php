@@ -21,17 +21,25 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'phone_number' => ['nullable', 'string', 'max:15'],
         ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'data_access_settings' => json_encode(['public' => false]),
-        ]);
+        try {
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'phone_number' => $request->phone_number,
+                'role' => 'user',
+                'data_access_settings' => json_encode(['public' => false]),
+                'two_factor_enabled' => true,
+            ]);
 
-        Auth::login($user);
-
-        return redirect()->route('two-factor.show');
+            return redirect()->route('login')
+                           ->with('success', 'Registrasi berhasil! Silakan Login.');
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => 'Terjadi kesalahan saat registrasi. Silakan coba lagi.'])
+                        ->withInput($request->except('password'));
+        }
     }
 }

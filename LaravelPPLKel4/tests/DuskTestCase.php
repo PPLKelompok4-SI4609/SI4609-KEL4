@@ -47,12 +47,4 @@ abstract class DuskTestCase extends BaseTestCase
             )
         );
     }
-
-    /**
-     * Define the base URL for Dusk tests.
-     */
-    protected function baseUrl()
-    {
-        return env('APP_URL', 'http://localhost');
-    }
 }

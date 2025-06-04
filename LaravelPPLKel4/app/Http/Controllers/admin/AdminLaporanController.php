@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Laporan;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\LaporanBanjir;
@@ -12,7 +11,7 @@ class AdminLaporanController extends Controller
     public function index()
     {
         $laporans = LaporanBanjir::latest()->get();
-        return view('admin.laporan', compact('laporans'));
+        return view('admin.laporan.index', compact('laporans'));
     }
 
     public function updateStatus(Request $request, $id)
@@ -22,5 +21,13 @@ class AdminLaporanController extends Controller
         $laporan->save();
 
         return redirect()->route('admin.laporan.index')->with('success', 'Status laporan berhasil diperbarui!');
+    }
+    
+    public function destroy($id)
+    {
+        $laporan = LaporanBanjir::findOrFail($id);
+        $laporan->delete();
+
+        return redirect()->route('admin.laporan.index')->with('success', 'Laporan berhasil dihapus!');
     }
 }

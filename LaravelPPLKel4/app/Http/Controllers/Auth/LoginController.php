@@ -23,30 +23,48 @@ class LoginController extends Controller
             'password' => ['required'],
         ]);
 
-        if (Auth::attempt($credentials, $request->filled('remember'))) {
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
             $user = Auth::user();
-            $user->generateTwoFactorCode();
 
-            // Kirim kode verifikasi via email
-            Mail::to($user->email)->send(new TwoFactorCode($user));
+            if ($user->two_factor_enabled) {
+                $user->generateTwoFactorCode();
+                session(['two_factor_user_id' => $user->id]);
 
-            // Kirim kode verifikasi via WhatsApp
-            $whatsapp = new WhatsAppService();
-            $whatsapp->sendMessage($user->phone_number, 'Kode verifikasi FloodRescue Anda: ' . $user->two_factor_code);
+                try {
+                    if (!$user->two_factor_code) {
+                        throw new \Exception('Kode verifikasi tidak dapat dibuat.');
+                    }
 
-            return redirect()->route('two-factor.show');
+                    Mail::to($user->email)->send(new TwoFactorCode($user));
+                } catch (\Exception $e) {
+                    \Log::error('Two Factor Auth Error: ' . $e->getMessage());
+                    return back()->withErrors(['email' => 'Gagal mengirim kode verifikasi. Silakan coba lagi.']);
+                }
+
+                return redirect()->route('two-factor.index');
+            }
+
+            if ($user->role === 'admin') {
+                return redirect()->route('admin.dashboard');
+            }
+
+            return redirect()->route('welcome');
         }
 
         return back()->withErrors([
             'email' => 'Email atau password yang Anda masukkan salah.',
-        ]);
+        ])->withInput($request->only('email'));
     }
 
     public function logout(Request $request)
     {
         Auth::logout();
+
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect('/');
+
+        return redirect('/home')->with('success', 'Anda telah berhasil logout!');
     }
 }
+

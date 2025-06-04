@@ -4,17 +4,18 @@ namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use App\Traits\EncryptAttributes;  // Perbaiki namespace dari Models ke Traits
+use App\Traits\EncryptAttributes;
 
 class User extends Authenticatable
 {
-    use Notifiable, EncryptsAttributes;
+    use Notifiable, EncryptAttributes;
 
     protected $fillable = [
         'name',
         'email',
         'password',
         'phone_number',
+        'role',
         'two_factor_enabled',
         'data_access_settings'
     ];
@@ -41,6 +42,9 @@ class User extends Authenticatable
         $this->two_factor_code = rand(100000, 999999);
         $this->two_factor_expires_at = now()->addMinutes(10);
         $this->save();
+        
+        \Mail::to($this->email)->send(new \App\Mail\TwoFactorCode($this->two_factor_code));
+        \Log::info('Two Factor Code generated for user: ' . $this->email . ' - Code: ' . $this->two_factor_code);
     }
 
     public function resetTwoFactorCode()
