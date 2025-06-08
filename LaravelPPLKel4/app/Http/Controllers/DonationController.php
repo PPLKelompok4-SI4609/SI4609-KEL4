@@ -12,17 +12,17 @@ class DonationController extends Controller
     // This function handles the display of the donation and order form
     public function index(Request $request)
     {
-        $donation = null; // Initialize donation to avoid undefined variable error
-        $tracking = [];   // Initialize tracking as an empty array
+        $donation = null;
+        $tracking = [];
 
-        // Check if the request has data for donation or aid order
+        // Check if the request has data for donation
         if ($request->has('amount') && $request->has('payment_method')) {
             // Process the donation
             $donation = Donation::create([
                 'user_id' => auth()->id(),
                 'amount' => $request->amount,
                 'payment_method' => $request->payment_method,
-                'status' => 'pending', // Default status
+                'status' => 'pending',
             ]);
 
             // Simulate donation tracking
@@ -40,27 +40,18 @@ class DonationController extends Controller
                 'order_type' => $request->order_type,
                 'status' => 'requested',
             ]);
+
+            // Store order success message in session and redirect
+            return redirect()->route('donasi.index')
+                           ->with('order_success', 'Pesanan Anda akan segera didistribusikan.');
         }
 
-        // If already on 'donasi.index', render the view without redirect
-        if (request()->is('donasi')) {
-            return view('donasi.index', compact('donation', 'tracking'));
-        }
-
-        // Redirect back with success message and donation/tracking info if not on 'donasi.index'
-        return redirect()->route('donasi.index')
-                         ->with('success', 'Proses berhasil. Donasi dan pemesanan bantuan sosial telah diproses.')
-                         ->with('donation', $donation) // Send donation data
-                         ->with('tracking', $tracking); // Send tracking info if exists
+        return view('donasi.index', compact('donation', 'tracking'));
     }
 
     // This function handles the POST request for storing the donation and aid order
     public function store(Request $request)
     {
-        // Initialize donation variable to avoid errors
-        $donation = null;
-        $tracking = [];
-
         // Process the donation if data is available
         if ($request->has('amount') && $request->has('payment_method')) {
             $donation = Donation::create([
@@ -75,9 +66,15 @@ class DonationController extends Controller
                 'donation_id' => $donation->id,
                 'tracking_info' => 'Donasi diterima dan sedang diproses.',
             ]);
+
+            // Store the donation details in the session
+            session(['donation' => $donation]);
+
+            // Redirect to the payment page after the donation has been stored
+            return redirect()->route('payment.form');
         }
 
-        // Handle aid order if available
+        // Process aid order request
         if ($request->has('order_type')) {
             $order = Order::create([
                 'user_id' => auth()->id(),
@@ -85,16 +82,46 @@ class DonationController extends Controller
                 'status' => 'requested',
             ]);
 
-            // Show a pop-up message after submitting the order
-            session()->flash('order_success', 'Pesanan Anda akan segera didistribusikan.');
-            return redirect()->route('donasi.index');
+            // Redirect with success message for order
+            return redirect()->route('donasi.index')
+                           ->with('order_success', 'Pesanan Anda akan segera didistribusikan.');
         }
 
+        // If no specific data, redirect back to donasi page
+        return redirect()->route('donasi.index');
+    }
 
-        // Return view with donation and tracking info
-        return redirect()->route('donasi.index')
-                         ->with('success', 'Proses berhasil. Donasi dan pemesanan bantuan sosial telah diproses.')
-                         ->with('donation', $donation) // Send donation info to the view
-                         ->with('tracking', $tracking); // Send tracking info if exists
+    // This function will display the payment method form
+    public function showPaymentForm()
+    {
+        return view('payment.form');
+    }
+
+    // This function will handle the payment process
+    public function processPayment(Request $request)
+    {
+        $donation = Donation::find($request->donation_id);
+        if ($donation) {
+            $donation->status = 'completed';
+            $donation->save();
+        }
+
+        return redirect()->route('donasi.tracking', ['donation_id' => $donation->id])
+                         ->with('success', 'Pembayaran berhasil. Terima kasih telah berdonasi!');
+    }
+
+    // Show the donation tracking page
+    public function showTracking($donation_id)
+    {
+        $donation = Donation::findOrFail($donation_id);
+        $tracking = DonationTracking::where('donation_id', $donation_id)->first();
+
+        return view('donasi.tracking', compact('donation', 'tracking'));
+    }
+
+    // Show success page after donation and payment
+    public function showSuccess()
+    {
+        return view('donasi.success');
     }
 }
